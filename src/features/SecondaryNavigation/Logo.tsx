@@ -2,9 +2,10 @@ import { css } from "../../../styled-system/css";
 
 interface LogoProps {
   size?: number;
+  border?: boolean;
 }
 
-export default function Logo({ size }: LogoProps) {
+export default function Logo({ size, border = false }: LogoProps) {
   return (
     <div
       className={css({
@@ -14,7 +15,7 @@ export default function Logo({ size }: LogoProps) {
 
         minWidth: "230px",
 
-        borderRight: "2px solid token(colors.effects.border)",
+        borderRight: border ? "2px solid token(colors.effects.border)" : "",
 
         fontSize:
           size === 1

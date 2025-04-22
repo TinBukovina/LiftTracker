@@ -41,6 +41,40 @@ export const colors: SemanticTokens["colors"] = {
     bgHover: { value: { base: "#fff", _dark: "#F4F4F4" } },
     border: { value: { base: "#fff", _dark: "#27303F" } },
   },
+  buttons: {
+    bg: {
+      normal: {
+        value: { base: "", _dark: "" },
+      },
+      form: {
+        value: { base: "", _dark: "#F4F4F4" },
+      },
+    },
+    bgHover: {
+      normal: {
+        value: { base: "", _dark: "" },
+      },
+      form: {
+        value: { base: "", _dark: "#0D1625" },
+      },
+    },
+    text: {
+      normal: {
+        value: { base: "", _dark: "" },
+      },
+      form: {
+        value: { base: "", _dark: "#0D1625" },
+      },
+    },
+    textHover: {
+      normal: {
+        value: { base: "", _dark: "" },
+      },
+      form: {
+        value: { base: "", _dark: "#F4F4F4" },
+      },
+    },
+  },
 };
 
 // Light

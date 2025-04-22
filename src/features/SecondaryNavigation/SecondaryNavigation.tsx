@@ -15,7 +15,7 @@ const NavigationDiv = styled("div", {
 export default function SecondaryNavigation() {
   return (
     <NavigationDiv>
-      <Logo />
+      <Logo border={true} />
       <Header />
     </NavigationDiv>
   );
