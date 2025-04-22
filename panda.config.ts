@@ -3,7 +3,7 @@ import { breakpoints } from "./design-system/breakpoints";
 import { colors } from "./design-system/colors";
 import { radii } from "./design-system/radii";
 import { spacings } from "./design-system/spacings";
-import { textStyles } from "./design-system/typografy";
+import { textStyles, fontSizes } from "./design-system/typografy";
 
 export default defineConfig({
   // Whether to use css reset
@@ -25,6 +25,7 @@ export default defineConfig({
       tokens: {
         radii: radii,
         spacing: spacings,
+        fontSizes,
       },
       textStyles: textStyles,
     },

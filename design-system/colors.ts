@@ -4,7 +4,7 @@ export const colors: SemanticTokens["colors"] = {
   surface: {
     s0: { value: { base: "#FDFDFD", _dark: "#0D1625" } },
     s1: { value: { base: "#F6F8FA", _dark: "#1B2433" } },
-    s3: { value: { base: "#EBEBEB", _dark: "#1B2433" } }, // nav
+    s2: { value: { base: "#EBEBEB", _dark: "#1B2433" } }, // nav
   },
   effects: {
     border: { value: { base: "#D1D1D1", _dark: "#27303F" } },
@@ -29,6 +29,17 @@ export const colors: SemanticTokens["colors"] = {
     black800: { value: { base: "#2E2D30", _dark: "#2E2D30" } },
     gray300: { value: { base: "#8C8B8E", _dark: "#8C8B8E" } },
     gray500: { value: { base: "#535257", _dark: "#535257" } },
+  },
+  search: {
+    text: { value: { base: "#fff", _dark: "#F4F4F4" } },
+    HoverText: { value: { base: "#fff", _dark: "#232225" } },
+    bg: { value: { base: "#fff", _dark: "#1B2433" } },
+    hoverBg: { value: { base: "#fff", _dark: "#FDFDFD" } },
+  },
+  navigationBtns: {
+    bg: { value: { base: "#fff", _dark: "#0D1625" } },
+    bgHover: { value: { base: "#fff", _dark: "#F4F4F4" } },
+    border: { value: { base: "#fff", _dark: "#27303F" } },
   },
 };
 
