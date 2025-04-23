@@ -1,33 +1,36 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { css } from "../../../styled-system/css";
+import { NavLink } from "react-router-dom";
+
 import Logo from "../SecondaryNavigation/Logo";
-import { styled } from "../../../styled-system/jsx";
+import InputComponent from "./InputComponent";
+import FormButton from "./FormButton";
 
-const InputItem = styled("div", {
-  base: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.75rem",
-  },
-});
-const StyledLabel = styled("label", {
-  base: {
-    display: "block",
-  },
-});
-const StyledInput = styled("input", {
-  base: {
-    padding: "0.5rem 1rem",
-    width: "100%",
-
-    backgroundColor: "effects.border",
-    borderRadius: "sm",
-  },
-});
+interface FormData {
+  password: string;
+  email: string;
+}
 
 export default function Login() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [formData, setFormData] = useState<FormData>({
+    password: "",
+    email: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("Form data\n", formData);
+  };
 
   return (
     <div
@@ -42,18 +45,20 @@ export default function Login() {
       })}
     >
       <Logo size={4} />
+
       <div
         className={css({
           marginTop: "6rem",
           marginX: "auto",
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "350px",
         })}
       >
         <p
           className={css({
             marginBottom: "1.5rem",
             fontSize: "h5",
+            fontWeight: "semibold",
             textAlign: "center",
           })}
         >
@@ -61,58 +66,28 @@ export default function Login() {
         </p>
 
         <form
+          onSubmit={handleSubmit}
           className={css({
             display: "flex",
             flexDirection: "column",
             gap: "1.5rem",
           })}
         >
-          <InputItem>
-            <StyledLabel htmlFor="email">Email</StyledLabel>
+          <InputComponent
+            label="Email"
+            name="email"
+            value={formData.email}
+            setter={handleChange}
+          />
+          <InputComponent
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            setter={handleChange}
+          />
 
-            <StyledInput
-              type="email"
-              id="email"
-              name="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </InputItem>
-          <InputItem>
-            <StyledLabel htmlFor="password">Password</StyledLabel>
-            <StyledInput
-              type="password"
-              id="password"
-              name="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </InputItem>
-
-          <button
-            className={css({
-              marginTop: "0.5rem",
-              padding: "0.5rem",
-
-              backgroundColor: "buttons.bg.form",
-              border: "2px solid transparent",
-              borderRadius: "sm",
-
-              color: "buttons.text.form",
-              fontWeight: "semibold",
-              cursor: "pointer",
-
-              _hover: {
-                backgroundColor: "buttons.bgHover.form",
-                border: "2px solid token(colors.effects.border)",
-                color: "buttons.textHover.form",
-              },
-            })}
-          >
-            Login
-          </button>
+          <FormButton>Login</FormButton>
           <div>
             <p
               className={css({
@@ -122,7 +97,8 @@ export default function Login() {
             >
               Don't have an account?
             </p>
-            <a
+            <NavLink
+              to="/signup"
               className={css({
                 display: "block",
 
@@ -139,10 +115,35 @@ export default function Login() {
               })}
             >
               Sign in
-            </a>
+            </NavLink>
           </div>
         </form>
       </div>
     </div>
   );
 }
+
+/* <InputItem>
+            <StyledLabel htmlFor="email">Email</StyledLabel>
+
+            <StyledInput
+              type="email"
+              id="email"
+              name="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </InputItem> 
+          <InputItem>
+            <StyledLabel htmlFor="password">Password</StyledLabel>
+            <StyledInput
+              type="password"
+              id="password"
+              name="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </InputItem>
+          */

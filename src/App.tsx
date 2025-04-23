@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppLayout from "./UI/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import RandomPage from "./pages/RandomPage";
-import Login from "./features/authentification/login";
-import Signup from "./features/authentification/signup";
+import Login from "./features/authentification/Login";
+import Signup from "./features/authentification/Signup";
 
 const queryClient = new QueryClient({
   defaultOptions: {

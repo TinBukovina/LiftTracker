@@ -46,7 +46,12 @@ export default function SideNavigation() {
           gap: "1rem",
         })}
       >
-        <NavLink to="/home" isActive={location.pathname.includes("home")}>
+        <NavLink
+          to="/home"
+          isActive={
+            location.pathname.includes("home") || location.pathname.length === 1
+          }
+        >
           <IconTemplate
             width="24"
             height="24"
