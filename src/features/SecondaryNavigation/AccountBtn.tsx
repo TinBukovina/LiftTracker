@@ -1,12 +1,12 @@
 import IconTemplate from "./IconTemplate";
-import { svgReturnType, userSvgInfo } from "../../utils/svgPaths";
+import { SvgReturnType, userSvgInfo } from "../../utils/svgPaths";
 import { css } from "../../../styled-system/css";
 import { useRef, useState } from "react";
 
 export default function AccountBtn() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  const svgInfoRef = useRef<svgReturnType>(userSvgInfo());
+  const svgInfoRef = useRef<SvgReturnType>(userSvgInfo());
 
   return (
     <div

@@ -8,21 +8,20 @@ import {
   homeSvgInfo,
   infoSvgInfo,
   loginSvgInfo,
-  /* logoutSvgInfo, */
   settingSvgInfo,
-  svgReturnType,
+  SvgReturnType,
 } from "../../utils/svgPaths";
 import { useLocation } from "react-router-dom";
 
 export default function SideNavigation() {
   const location = useLocation();
 
-  const homeSvgInfoRef = useRef<svgReturnType>(homeSvgInfo());
-  const analyticsSvgInfoRef = useRef<svgReturnType>(analyticsSvgInfo());
-  const accountSvgInfoRef = useRef<svgReturnType>(accountSvgInfo());
-  const settingsSvgInfoRef = useRef<svgReturnType>(settingSvgInfo());
-  const infoSvgInfoRef = useRef<svgReturnType>(infoSvgInfo());
-  const loginSvgInfoRef = useRef<svgReturnType>(loginSvgInfo());
+  const homeSvgInfoRef = useRef<SvgReturnType>(homeSvgInfo());
+  const analyticsSvgInfoRef = useRef<SvgReturnType>(analyticsSvgInfo());
+  const accountSvgInfoRef = useRef<SvgReturnType>(accountSvgInfo());
+  const settingsSvgInfoRef = useRef<SvgReturnType>(settingSvgInfo());
+  const infoSvgInfoRef = useRef<SvgReturnType>(infoSvgInfo());
+  const loginSvgInfoRef = useRef<SvgReturnType>(loginSvgInfo());
   /* const logoutSvgInfoRef = useRef<svgReturnType>(logoutSvgInfo()); */
 
   return (

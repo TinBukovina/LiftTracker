@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { css } from "../../../styled-system/css";
 import IconTemplate from "./IconTemplate";
-import { searchSvgInfo, svgReturnType } from "../../utils/svgPaths";
+import { searchSvgInfo, SvgReturnType } from "../../utils/svgPaths";
 
 export default function Search() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const svgInfoRef = useRef<svgReturnType>(searchSvgInfo());
+  const svgInfoRef = useRef<SvgReturnType>(searchSvgInfo());
 
   return (
     <div

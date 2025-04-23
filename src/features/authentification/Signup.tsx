@@ -5,12 +5,7 @@ import { css } from "../../../styled-system/css";
 import Logo from "../SecondaryNavigation/Logo";
 import FormButton from "./FormButton";
 import InputComponent from "./InputComponent";
-import {
-  checkForEmptyFields,
-  checkPasswordStrength,
-  isEmailValid,
-  isPasswordValid,
-} from "./validateInputs";
+import { checkPasswordStrength, validateAllInputs } from "./validateInputs";
 
 export interface SignUpFormData {
   firstName: {
@@ -30,6 +25,10 @@ export interface SignUpFormData {
     required: boolean;
   };
   repeatPassword: {
+    value: string;
+    required: boolean;
+  };
+  [key: string]: {
     value: string;
     required: boolean;
   };
@@ -77,29 +76,9 @@ export default function Signup() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const emptyFieldValidation = checkForEmptyFields(formData);
-    if (!emptyFieldValidation.valid) {
-      setInputError(emptyFieldValidation.message);
-      return;
-    }
+    setInputError(validateAllInputs(formData));
 
-    const emailValidation = isEmailValid(formData.email.value);
-    if (!emailValidation.valid) {
-      setInputError(emailValidation.message);
-      return;
-    }
-
-    const passwordValidation = isPasswordValid(
-      formData.password.value,
-      formData.repeatPassword.value
-    );
-
-    if (!passwordValidation.valid) {
-      setInputError(passwordValidation.message);
-      return;
-    }
-
-    setInputError("");
+    console.log("Form data\n", formData);
   };
 
   return (
@@ -113,7 +92,7 @@ export default function Signup() {
 
         backgroundColor: "surface.s0",
 
-        overflow: "auto",
+        overflow: "hidden",
       })}
     >
       <Logo size={4} />

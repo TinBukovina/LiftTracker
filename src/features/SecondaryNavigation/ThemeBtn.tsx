@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import { css } from "../../../styled-system/css";
 import IconTemplate from "./IconTemplate";
-import { sunSvgInfo, svgReturnType } from "../../utils/svgPaths";
+import { sunSvgInfo, SvgReturnType } from "../../utils/svgPaths";
 
 export default function ThemeBtn() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const svgInfoRef = useRef<svgReturnType>(sunSvgInfo());
+  const svgInfoRef = useRef<SvgReturnType>(sunSvgInfo());
 
   return (
     <div

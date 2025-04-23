@@ -5,6 +5,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import RandomPage from "./pages/RandomPage";
 import Login from "./features/authentification/Login";
 import Signup from "./features/authentification/Signup";
+import { useToast } from "./features/toasts/ToastContext";
+import Toast from "./features/toasts/toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,12 +40,27 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { toasts, handleToastComplete } = useToast();
   document.documentElement.classList.add("dark");
 
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} />
+
+      <>
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            type={toast.type}
+            id={toast.id}
+            onComplete={handleToastComplete}
+            isActive={toast.isActive}
+          >
+            {toast.message}
+          </Toast>
+        ))}
+        <RouterProvider router={router} />
+      </>
     </QueryClientProvider>
   );
 }

@@ -1,33 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { css } from "../../../styled-system/css";
 import { NavLink } from "react-router-dom";
 
 import Logo from "../SecondaryNavigation/Logo";
 import InputComponent from "./InputComponent";
 import FormButton from "./FormButton";
+import { validateAllInputs } from "./validateInputs";
+import { uppercaseFirstLetter } from "../../utils/helperFunction";
+import { useToast } from "../toasts/ToastContext";
 
-interface FormData {
-  password: string;
-  email: string;
+interface LoginFormData {
+  password: {
+    value: string;
+    required: boolean;
+  };
+  email: {
+    value: string;
+    required: boolean;
+  };
+  [key: string]: {
+    value: string;
+    required: boolean;
+  };
 }
 
 export default function Login() {
-  const [formData, setFormData] = useState<FormData>({
-    password: "",
-    email: "",
+  const [formData, setFormData] = useState<LoginFormData>({
+    password: {
+      value: "",
+      required: true,
+    },
+    email: {
+      value: "",
+      required: true,
+    },
   });
+  const [inputError, setInputError] = useState<string>("");
+
+  const { addNewToast } = useToast();
+
+  useEffect(() => {
+    addNewToast(`New toast at ${new Date().toLocaleTimeString()}`, "positive");
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: { ...prevState[name as keyof LoginFormData], value },
     }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const validateMessage = validateAllInputs(formData);
+    if (validateMessage !== "") {
+      setInputError(
+        uppercaseFirstLetter(validateMessage) || "Something went wrong."
+      );
+      return;
+    }
 
     console.log("Form data\n", formData);
   };
@@ -42,10 +76,14 @@ export default function Login() {
         height: "100vh",
 
         backgroundColor: "surface.s0",
+
+        overflow: "hidden",
       })}
     >
       <Logo size={4} />
 
+      {/* showToast("Some message", "positive") */}
+      {/* <Toast type="negative">{inputError}</Toast> */}
       <div
         className={css({
           marginTop: "6rem",
@@ -76,17 +114,18 @@ export default function Login() {
           <InputComponent
             label="Email"
             name="email"
-            value={formData.email}
+            value={formData.email.value}
             setter={handleChange}
           />
           <InputComponent
             label="Password"
             name="password"
             type="password"
-            value={formData.password}
+            value={formData.password.value}
             setter={handleChange}
           />
 
+          {/* {inputError !== "" ? <p>{inputError}</p> : ""} */}
           <FormButton>Login</FormButton>
           <div>
             <p
@@ -122,28 +161,3 @@ export default function Login() {
     </div>
   );
 }
-
-/* <InputItem>
-            <StyledLabel htmlFor="email">Email</StyledLabel>
-
-            <StyledInput
-              type="email"
-              id="email"
-              name="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </InputItem> 
-          <InputItem>
-            <StyledLabel htmlFor="password">Password</StyledLabel>
-            <StyledInput
-              type="password"
-              id="password"
-              name="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </InputItem>
-          */
