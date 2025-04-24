@@ -8,13 +8,19 @@ import {
   homeSvgInfo,
   infoSvgInfo,
   loginSvgInfo,
+  logoutSvgInfo,
   settingSvgInfo,
   SvgReturnType,
 } from "../../utils/svgPaths";
 import { useLocation } from "react-router-dom";
+import { useUser } from "../authentification/customHooks/useUser";
+import { useLogout } from "../authentification/customHooks/useLogout";
 
 export default function SideNavigation() {
   const location = useLocation();
+
+  const { isAuthenticated } = useUser();
+  const { logout } = useLogout();
 
   const homeSvgInfoRef = useRef<SvgReturnType>(homeSvgInfo());
   const analyticsSvgInfoRef = useRef<SvgReturnType>(analyticsSvgInfo());
@@ -22,8 +28,11 @@ export default function SideNavigation() {
   const settingsSvgInfoRef = useRef<SvgReturnType>(settingSvgInfo());
   const infoSvgInfoRef = useRef<SvgReturnType>(infoSvgInfo());
   const loginSvgInfoRef = useRef<SvgReturnType>(loginSvgInfo());
-  /* const logoutSvgInfoRef = useRef<svgReturnType>(logoutSvgInfo()); */
+  const logoutSvgInfoRef = useRef<SvgReturnType>(logoutSvgInfo());
 
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <div
       className={css({
@@ -103,14 +112,26 @@ export default function SideNavigation() {
         </NavLink>
       </div>
       <div>
-        <NavLink to="/login" isActive={location.pathname.includes("login")}>
+        <NavLink
+          to="/login"
+          handleClick={handleLogout}
+          isActive={location.pathname.includes("login")}
+        >
           <IconTemplate
             width="24"
             height="24"
-            path={loginSvgInfoRef.current.path}
-            viewBox={loginSvgInfoRef.current.viewBox}
+            path={
+              !isAuthenticated
+                ? loginSvgInfoRef.current.path
+                : logoutSvgInfoRef.current.path
+            }
+            viewBox={
+              !isAuthenticated
+                ? loginSvgInfoRef.current.viewBox
+                : logoutSvgInfoRef.current.viewBox
+            }
           />
-          Login
+          {isAuthenticated ? "Logout" : "Login"}
         </NavLink>
       </div>
     </div>

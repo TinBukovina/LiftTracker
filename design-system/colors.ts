@@ -58,6 +58,14 @@ export const colors: SemanticTokens["colors"] = {
         value: { base: "", _dark: "#0D1625" },
       },
     },
+    bgDisabled: {
+      normal: {
+        value: { base: "", _dark: "" },
+      },
+      form: {
+        value: { base: "", _dark: "rgba(140, 139, 142, 0.55)" },
+      },
+    },
     text: {
       normal: {
         value: { base: "", _dark: "" },

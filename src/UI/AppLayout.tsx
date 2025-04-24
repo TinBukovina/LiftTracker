@@ -4,18 +4,8 @@ import { css } from "../../styled-system/css";
 import SecondaryNavigation from "../features/SecondaryNavigation/SecondaryNavigation";
 import SideNavigation from "../features/PrimaryNavigation/SideNavigation";
 import { Center } from "../../styled-system/jsx";
-import { useToast } from "../features/toasts/ToastContext";
-import { useEffect } from "react";
 
 export default function AppLayout() {
-  const { addNewToast } = useToast();
-
-  useEffect(() => {
-    addNewToast("First notification", "positive");
-    addNewToast("Second notification", "negative");
-    addNewToast("Third notification", "positive");
-  }, [addNewToast]);
-
   return (
     <div
       className={css({

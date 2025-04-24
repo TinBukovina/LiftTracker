@@ -8,6 +8,7 @@ import { uppercaseFirstLetter } from "../../../utils/helperFunction";
 import { useToast } from "../../toasts/ToastContext";
 import InputComponent from "../components/InputComponent";
 import FormButton from "../components/FormButton";
+import { LoginCredentialInteface, useLogin } from "../customHooks/useLogin";
 
 interface LoginFormData {
   password: {
@@ -27,17 +28,17 @@ interface LoginFormData {
 export default function Login() {
   const [formData, setFormData] = useState<LoginFormData>({
     password: {
-      value: "",
+      value: "test123",
       required: true,
     },
     email: {
-      value: "",
+      value: "test@gmail.com",
       required: true,
     },
   });
   const [, setInputError] = useState<string>("");
-
   const { addNewToast } = useToast();
+  const { login, isLoading } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,7 +52,7 @@ export default function Login() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const validateMessage = validateAllInputs(formData);
+    const validateMessage = validateAllInputs(formData, true);
     if (validateMessage !== "") {
       setInputError(() => {
         addNewToast(
@@ -65,6 +66,12 @@ export default function Login() {
     }
 
     console.log("Form data\n", formData);
+    const loginCredentials: LoginCredentialInteface = {
+      email: formData.email.value,
+      password: formData.password.value,
+    };
+
+    login(loginCredentials);
   };
 
   return (
@@ -122,6 +129,7 @@ export default function Login() {
             setter={handleChange}
             placeholder="Email"
             displayLabel={false}
+            disabled={isLoading}
           />
           <InputComponent
             label="Password"
@@ -131,9 +139,10 @@ export default function Login() {
             setter={handleChange}
             placeholder="Password"
             displayLabel={false}
+            disabled={isLoading}
           />
 
-          <FormButton>Login</FormButton>
+          <FormButton isDisabled={isLoading}>Login</FormButton>
           <div>
             <p
               className={css({
@@ -154,6 +163,8 @@ export default function Login() {
                 textAlign: "center",
                 color: "actions.green",
                 cursor: "pointer",
+
+                pointerEvents: isLoading ? "none" : "default",
 
                 _hover: {
                   textDecoration: "underline",

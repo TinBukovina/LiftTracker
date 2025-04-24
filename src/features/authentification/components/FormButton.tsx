@@ -1,31 +1,18 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { css } from "../../../../styled-system/css";
+import { FormBtnStyles } from "../styles/StyledComponents";
 
 interface FormButtonProps {
   children: ReactNode;
+  isDisabled?: boolean;
 }
 
-export default function FormButton({ children }: FormButtonProps) {
+export default function FormButton({
+  children,
+  isDisabled = false,
+}: FormButtonProps) {
   return (
-    <button
-      className={css({
-        padding: "0.5rem",
-
-        backgroundColor: "buttons.bg.form",
-        border: "2px solid transparent",
-        borderRadius: "sm",
-
-        color: "buttons.text.form",
-        fontWeight: "semibold",
-        cursor: "pointer",
-
-        _hover: {
-          backgroundColor: "buttons.bgHover.form",
-          border: "2px solid token(colors.effects.border)",
-          color: "buttons.textHover.form",
-        },
-      })}
-    >
+    <button disabled={isDisabled} className={css({ ...FormBtnStyles })}>
       {children}
     </button>
   );

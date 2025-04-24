@@ -40,13 +40,14 @@ export function isEmailValid(email: string): ValidationReturn {
 
 export function isPasswordValid(
   passowrd: string,
-  repeatPassword: string = ""
+  repeatPassword: string = "",
+  logginMode: boolean = false
 ): ValidationReturn {
   if (repeatPassword !== "" && passowrd !== repeatPassword) {
     return { valid: false, message: "Passwords do not metch." };
   }
 
-  if (passowrd.length < 8) {
+  if (!logginMode && passowrd.length < 8) {
     return {
       valid: false,
       message: "Minimum requiements for password lenght is 8, reccomended 12.",
@@ -80,7 +81,8 @@ export function checkForEmptyFields<T extends Record<string, FormField>>(
 }
 
 export function validateAllInputs<T extends Record<string, FormField>>(
-  formData: T
+  formData: T,
+  loginMode: boolean = false
 ): string {
   const emptyFieldValidation = checkForEmptyFields(formData);
   if (!emptyFieldValidation.valid) {
@@ -94,7 +96,8 @@ export function validateAllInputs<T extends Record<string, FormField>>(
 
   const passwordValidation = isPasswordValid(
     formData.password.value,
-    formData.repeatPassword?.value
+    formData.repeatPassword?.value,
+    loginMode
   );
 
   if (!passwordValidation.valid) {

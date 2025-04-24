@@ -6,12 +6,14 @@ interface NavLinkProps {
   children: ReactNode;
   to?: string;
   isActive?: boolean;
+  handleClick?: () => void;
 }
 
 export default function NavLink({
   children,
   to,
   isActive = false,
+  handleClick,
 }: NavLinkProps) {
   const navigation = useNavigate();
 
@@ -24,14 +26,14 @@ export default function NavLink({
       }
     : {};
 
-  const handleClick = () => {
+  const defaultHandleClick = () => {
     if (!to) return;
 
     navigation(to || "/");
   };
   return (
     <div
-      onClick={handleClick}
+      onClick={handleClick || defaultHandleClick}
       className={css({
         display: "flex",
         gap: "0.5rem",
