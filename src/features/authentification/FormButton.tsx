@@ -9,7 +9,6 @@ export default function FormButton({ children }: FormButtonProps) {
   return (
     <button
       className={css({
-        marginTop: "0.5rem",
         padding: "0.5rem",
 
         backgroundColor: "buttons.bg.form",

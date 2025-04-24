@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { css } from "../../../styled-system/css";
 import { NavLink } from "react-router-dom";
 
@@ -35,13 +35,9 @@ export default function Login() {
       required: true,
     },
   });
-  const [inputError, setInputError] = useState<string>("");
+  const [, setInputError] = useState<string>("");
 
   const { addNewToast } = useToast();
-
-  useEffect(() => {
-    addNewToast(`New toast at ${new Date().toLocaleTimeString()}`, "positive");
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,9 +53,14 @@ export default function Login() {
 
     const validateMessage = validateAllInputs(formData);
     if (validateMessage !== "") {
-      setInputError(
-        uppercaseFirstLetter(validateMessage) || "Something went wrong."
-      );
+      setInputError(() => {
+        addNewToast(
+          uppercaseFirstLetter(validateMessage) || "Something went wrong.",
+          "negative"
+        );
+
+        return uppercaseFirstLetter(validateMessage) || "Something went wrong.";
+      });
       return;
     }
 
@@ -82,11 +83,14 @@ export default function Login() {
     >
       <Logo size={4} />
 
-      {/* showToast("Some message", "positive") */}
-      {/* <Toast type="negative">{inputError}</Toast> */}
       <div
         className={css({
-          marginTop: "6rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignContent: "center",
+
+          marginTop: "-10vh",
           marginX: "auto",
           width: "100%",
           maxWidth: "350px",
@@ -116,6 +120,8 @@ export default function Login() {
             name="email"
             value={formData.email.value}
             setter={handleChange}
+            placeholder="Email"
+            displayLabel={false}
           />
           <InputComponent
             label="Password"
@@ -123,9 +129,10 @@ export default function Login() {
             type="password"
             value={formData.password.value}
             setter={handleChange}
+            placeholder="Password"
+            displayLabel={false}
           />
 
-          {/* {inputError !== "" ? <p>{inputError}</p> : ""} */}
           <FormButton>Login</FormButton>
           <div>
             <p

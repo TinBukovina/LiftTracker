@@ -1,5 +1,6 @@
 import React from "react";
 import { InputItem, StyledInput, StyledLabel } from "./StyledComponents";
+import { css } from "../../../styled-system/css";
 
 interface InputComponentsProps {
   value: string;
@@ -14,6 +15,10 @@ interface InputComponentsProps {
   disabled?: boolean;
   maxLength?: number;
   minLength?: number;
+
+  displayPasswordStrength?: boolean;
+  passwordStrength?: number;
+  displayLabel?: boolean;
 }
 
 export default function InputComponent({
@@ -21,18 +26,37 @@ export default function InputComponent({
   setter,
   label,
   name,
-  type = "string",
+  type = "text",
   required = false,
   placeholder = "",
   disabled = false,
   minLength,
   maxLength,
+
+  displayPasswordStrength = false,
+  passwordStrength = 0,
+  displayLabel = true,
 }: InputComponentsProps) {
   return (
     <InputItem>
-      <StyledLabel htmlFor={label}>{label}</StyledLabel>
+      {displayLabel ? <StyledLabel htmlFor={label}>{label}</StyledLabel> : ""}
 
       <StyledInput
+        className={css({
+          border: "2px solid transparent",
+          outline: displayPasswordStrength ? "none" : "default",
+
+          _focus: {
+            border:
+              type === "password" && displayPasswordStrength
+                ? passwordStrength < 3
+                  ? "2px solid red"
+                  : passwordStrength < 5
+                    ? "2px solid yellow"
+                    : "2px solid green"
+                : "2px solid transparent",
+          },
+        })}
         type={type}
         id={label}
         name={name}

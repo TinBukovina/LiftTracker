@@ -16,6 +16,7 @@ interface ToastProps {
   onComplete: (id: number) => void;
   id: number;
   isActive?: boolean;
+  duration?: number;
 }
 
 export default function Toast({
@@ -25,9 +26,9 @@ export default function Toast({
   onComplete,
   id,
   isActive = true,
+  duration = 5,
 }: ToastProps) {
   const [progress, setProgress] = useState<number>(100);
-  const duration = 5;
   const updateInterval = 50;
   const [visible, setVisible] = useState<boolean>(isActive);
 
@@ -68,7 +69,6 @@ export default function Toast({
     return () => clearInterval(timer);
   }, [completeCountdown, isActive, duration]);
 
-  // If not visible, don't render anything
   if (!visible) {
     return null;
   }

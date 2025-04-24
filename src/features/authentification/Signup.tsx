@@ -6,6 +6,8 @@ import Logo from "../SecondaryNavigation/Logo";
 import FormButton from "./FormButton";
 import InputComponent from "./InputComponent";
 import { checkPasswordStrength, validateAllInputs } from "./validateInputs";
+import { uppercaseFirstLetter } from "../../utils/helperFunction";
+import { useToast } from "../toasts/ToastContext";
 
 export interface SignUpFormData {
   firstName: {
@@ -57,8 +59,10 @@ export default function Signup() {
       required: true,
     },
   });
-  const [inputError, setInputError] = useState<string>("");
+  const [, setInputError] = useState<string>("");
   const [passwordStrength, setPasswordStrength] = useState<number | null>(null);
+
+  const { addNewToast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -76,7 +80,18 @@ export default function Signup() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setInputError(validateAllInputs(formData));
+    const validateMessage = validateAllInputs(formData);
+    if (validateMessage !== "") {
+      setInputError(() => {
+        addNewToast(
+          uppercaseFirstLetter(validateMessage) || "Something went wrong.",
+          "negative"
+        );
+
+        return uppercaseFirstLetter(validateMessage) || "Something went wrong.";
+      });
+      return;
+    }
 
     console.log("Form data\n", formData);
   };
@@ -87,7 +102,7 @@ export default function Signup() {
         display: "grid",
         gridTemplateRows: "auto 1fr",
 
-        padding: "1rem 1rem",
+        padding: "2rem 1rem",
         height: "100vh",
 
         backgroundColor: "surface.s0",
@@ -98,7 +113,12 @@ export default function Signup() {
       <Logo size={4} />
       <div
         className={css({
-          marginTop: "2rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignContent: "center",
+
+          marginTop: "-5vh",
           marginX: "auto",
           width: "100%",
           maxWidth: "350px",
@@ -120,7 +140,7 @@ export default function Signup() {
           className={css({
             display: "flex",
             flexDirection: "column",
-            gap: "1rem",
+            gap: "1.5rem",
           })}
         >
           <div
@@ -134,12 +154,16 @@ export default function Signup() {
               name="firstName"
               value={formData.firstName.value}
               setter={handleChange}
+              placeholder="Name"
+              displayLabel={false}
             />
             <InputComponent
               label="Second name"
               name="secondName"
               value={formData.secondName.value}
               setter={handleChange}
+              placeholder="Surname"
+              displayLabel={false}
             />
           </div>
           <InputComponent
@@ -148,6 +172,8 @@ export default function Signup() {
             type="string"
             value={formData.email.value}
             setter={handleChange}
+            placeholder="Email"
+            displayLabel={false}
           />
           <InputComponent
             label="Password"
@@ -155,17 +181,20 @@ export default function Signup() {
             type="password"
             value={formData.password.value}
             setter={handleChange}
+            displayPasswordStrength={true}
+            passwordStrength={passwordStrength || 0}
+            placeholder="Password"
+            displayLabel={false}
           />
-          {passwordStrength ? <p>{passwordStrength}</p> : ""}
           <InputComponent
             label="Repeat password"
             name="repeatPassword"
             type="password"
             value={formData.repeatPassword.value}
             setter={handleChange}
+            placeholder="Repeat password"
+            displayLabel={false}
           />
-
-          {inputError !== "" ? <p>{inputError}</p> : ""}
 
           <FormButton>Sign up</FormButton>
           <div>

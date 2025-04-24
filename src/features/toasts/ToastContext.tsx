@@ -37,32 +37,37 @@ interface ToastInterface {
   isActive?: boolean;
 }
 
+const TOAST_DURATION = 5000;
+const BUFFER_TIME = 1000;
+
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastInterface[]>([]);
-  const [displayToastsSignal, setDisplayToastsSignal] =
+  const [displayToastsSignal, ] =
     useState<boolean>(false);
   const [activeToastId, setActiveToastId] = useState<number | null>(null);
 
   const toastIdCounterRef = useRef<number>(0);
-  // Help us prevent duplicate toasts when called one after another.
-  const pendingMessagesRef = useRef<Set<string>>(new Set());
+  const messageHistoryRef = useRef(new Map<string, number>());
 
   const addNewToast = useCallback((message: string, type: ToastStatus) => {
-    if (pendingMessagesRef.current.has(message)) {
+    const now = Date.now();
+
+    const lastShown = messageHistoryRef.current.get(message);
+    if (lastShown && now - lastShown < TOAST_DURATION + BUFFER_TIME) {
+      console.log(
+        `[ADD TOAST BLOCKED] Message shown recently: "${message}", ${(now - lastShown) / 1000}s ago`
+      );
       return;
     }
 
-    pendingMessagesRef.current.add(message);
+    messageHistoryRef.current.set(message, now);
 
     setToasts((prevToasts) => {
       if (prevToasts.some((toast) => toast.message === message)) {
-        pendingMessagesRef.current.delete(message);
         return prevToasts;
       }
 
       const newToastId = toastIdCounterRef.current++;
-
-      pendingMessagesRef.current.delete(message);
 
       return [
         ...prevToasts,
@@ -70,17 +75,30 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
           id: newToastId,
           message,
           type,
-          isActive: activeToastId === null && prevToasts.length === 0,
+          isActive: prevToasts.length === 0,
         },
       ];
     });
+
+    setTimeout(
+      () => {
+        const cleanupTime = Date.now();
+        for (const [msg, timestamp] of messageHistoryRef.current.entries()) {
+          if (cleanupTime - timestamp > TOAST_DURATION + BUFFER_TIME) {
+            messageHistoryRef.current.delete(msg);
+            console.log(`[CLEANUP] Removed old message: "${msg}"`);
+          }
+        }
+      },
+      TOAST_DURATION + BUFFER_TIME + 50
+    );
   }, []);
 
+  // 2.
   const handleToastComplete = useCallback((id: number) => {
     setToasts((prevToasts) => {
       const updatedToasts = prevToasts.filter((toast) => toast.id !== id);
 
-      // If there are more toasts in the queue, activate the next one
       if (updatedToasts.length > 0) {
         return updatedToasts.map((toast, index) => ({
           ...toast,
@@ -94,7 +112,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   }, []);
 
   const startDisplayingToasts = useCallback(() => {
-    setDisplayToastsSignal(true);
+    /* setDisplayToastsSignal(true);
 
     setToasts((prevToasts) => {
       if (prevToasts.length > 0) {
@@ -105,11 +123,11 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         }));
       }
       return prevToasts;
-    });
+    }); */
   }, []);
 
   useEffect(() => {
-    if (activeToastId === null && toasts.length > 0 && displayToastsSignal) {
+    /* if (activeToastId === null && toasts.length > 0 && displayToastsSignal) {
       setActiveToastId(toasts[0].id);
       setToasts((prevToasts) =>
         prevToasts.map((toast, index) => ({
@@ -117,7 +135,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
           isActive: index === 0,
         }))
       );
-    }
+    } */
   }, [activeToastId, toasts, displayToastsSignal]);
 
   const contextValue: ToastContextType = {
