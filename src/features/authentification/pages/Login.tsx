@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { css } from "../../../styled-system/css";
+import { css } from "../../../../styled-system/css";
 import { NavLink } from "react-router-dom";
 
-import Logo from "../SecondaryNavigation/Logo";
-import InputComponent from "./InputComponent";
-import FormButton from "./FormButton";
-import { validateAllInputs } from "./validateInputs";
-import { uppercaseFirstLetter } from "../../utils/helperFunction";
-import { useToast } from "../toasts/ToastContext";
+import Logo from "../../SecondaryNavigation/Logo";
+import { validateAllInputs } from "../utils/validateInputs";
+import { uppercaseFirstLetter } from "../../../utils/helperFunction";
+import { useToast } from "../../toasts/ToastContext";
+import InputComponent from "../components/InputComponent";
+import FormButton from "../components/FormButton";
 
 interface LoginFormData {
   password: {

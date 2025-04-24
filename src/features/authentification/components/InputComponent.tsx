@@ -1,6 +1,10 @@
 import React from "react";
-import { InputItem, StyledInput, StyledLabel } from "./StyledComponents";
-import { css } from "../../../styled-system/css";
+import {
+  InputItem,
+  StyledInput,
+  StyledLabel,
+} from "../styles/StyledComponents";
+import { css } from "../../../../styled-system/css";
 
 interface InputComponentsProps {
   value: string;

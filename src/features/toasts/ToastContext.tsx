@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { ToastStatus } from "./toast";
+import { ToastStatus } from "./Toast";
 
 interface ToastContextType {
   toasts: ToastInterface[];
@@ -42,8 +42,7 @@ const BUFFER_TIME = 1000;
 
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastInterface[]>([]);
-  const [displayToastsSignal, ] =
-    useState<boolean>(false);
+  const [displayToastsSignal] = useState<boolean>(false);
   const [activeToastId, setActiveToastId] = useState<number | null>(null);
 
   const toastIdCounterRef = useRef<number>(0);

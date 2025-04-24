@@ -1,13 +1,16 @@
 import { NavLink } from "react-router-dom";
 import React, { useState } from "react";
 
-import { css } from "../../../styled-system/css";
-import Logo from "../SecondaryNavigation/Logo";
-import FormButton from "./FormButton";
-import InputComponent from "./InputComponent";
-import { checkPasswordStrength, validateAllInputs } from "./validateInputs";
-import { uppercaseFirstLetter } from "../../utils/helperFunction";
-import { useToast } from "../toasts/ToastContext";
+import { css } from "../../../../styled-system/css";
+import Logo from "../../SecondaryNavigation/Logo";
+import {
+  checkPasswordStrength,
+  validateAllInputs,
+} from "../utils/validateInputs";
+import { uppercaseFirstLetter } from "../../../utils/helperFunction";
+import { useToast } from "../../toasts/ToastContext";
+import InputComponent from "../components/InputComponent";
+import FormButton from "../components/FormButton";
 
 export interface SignUpFormData {
   firstName: {

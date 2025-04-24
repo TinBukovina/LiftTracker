@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppLayout from "./UI/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import RandomPage from "./pages/RandomPage";
-import Login from "./features/authentification/Login";
-import Signup from "./features/authentification/Signup";
+import Login from "./features/authentification/pages/Login";
+import Signup from "./features/authentification/pages/Signup";
 import { useToast } from "./features/toasts/ToastContext";
 import Toast from "./features/toasts/toast";
 
