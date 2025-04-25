@@ -8,11 +8,11 @@ export const colors: SemanticTokens["colors"] = {
   },
   effects: {
     border: { value: { base: "#D1D1D1", _dark: "#27303F" } },
-    hoverDark: { value: { base: "#2E2D30", _dark: "#27303F" } },
-    hoverLight: { value: { base: "#3B3A3E", _dark: "#27303F" } },
   },
   typography: {
     text: { value: { base: "#232225", _dark: "#F4F4F4" } },
+    textHover: { value: { base: "#F4F4F4", _dark: "#232225" } },
+    secondaryText: { value: { base: "#8C8B8E", _dark: "#8C8B8E" } },
     link: { value: { base: "#8C8B8E", _dark: "#8C8B8E" } },
     linkActive: { value: { base: "#535257", _dark: "#F4F4F4" } },
   },
@@ -44,7 +44,7 @@ export const colors: SemanticTokens["colors"] = {
   buttons: {
     bg: {
       normal: {
-        value: { base: "", _dark: "" },
+        value: { base: "", _dark: "#0D1625" },
       },
       form: {
         value: { base: "", _dark: "#F4F4F4" },
@@ -52,7 +52,7 @@ export const colors: SemanticTokens["colors"] = {
     },
     bgHover: {
       normal: {
-        value: { base: "", _dark: "" },
+        value: { base: "", _dark: "#F4F4F4" },
       },
       form: {
         value: { base: "", _dark: "#0D1625" },
@@ -84,8 +84,8 @@ export const colors: SemanticTokens["colors"] = {
     },
   },
   breadCrumbs: {
-    active: { value: { base: "", _dark: "#8C8B8E" } },
-    inActive: { value: { base: "", _dark: "#535257" } },
+    active: { value: { base: "", _dark: "#CAC9CB" } },
+    inActive: { value: { base: "", _dark: "#8C8B8E" } },
   },
 };
 

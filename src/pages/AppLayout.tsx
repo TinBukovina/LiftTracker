@@ -11,19 +11,29 @@ export default function AppLayout() {
         display: "grid",
         gridTemplateRows: "85px auto",
         height: "100vh",
+        maxHeight: "100vh",
         backgroundColor: "surface.s0",
         color: "typography.text",
+        overflow: "hidden",
       })}
     >
       <SecondaryNavigation />
 
       <div
         className={css({
-          display: "flex",
+          display: "grid",
+          gridTemplateColumns: "auto 1fr",
+          overflow: "hidden",
         })}
       >
         <SideNavigation />
-        <div className={css({ padding: "2rem", width: "100%" })}>
+        <div
+          className={css({
+            display: "flex",
+            padding: "2rem",
+            overflow: "hidden",
+          })}
+        >
           <Outlet />
         </div>
       </div>
