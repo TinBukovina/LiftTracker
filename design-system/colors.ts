@@ -83,6 +83,10 @@ export const colors: SemanticTokens["colors"] = {
       },
     },
   },
+  breadCrumbs: {
+    active: { value: { base: "", _dark: "#8C8B8E" } },
+    inActive: { value: { base: "", _dark: "#535257" } },
+  },
 };
 
 // Light

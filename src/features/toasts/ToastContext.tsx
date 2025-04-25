@@ -53,9 +53,9 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
 
     const lastShown = messageHistoryRef.current.get(message);
     if (lastShown && now - lastShown < TOAST_DURATION + BUFFER_TIME) {
-      console.log(
+      /*  console.log(
         `[ADD TOAST BLOCKED] Message shown recently: "${message}", ${(now - lastShown) / 1000}s ago`
-      );
+      ); */
       return;
     }
 
@@ -85,7 +85,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         for (const [msg, timestamp] of messageHistoryRef.current.entries()) {
           if (cleanupTime - timestamp > TOAST_DURATION + BUFFER_TIME) {
             messageHistoryRef.current.delete(msg);
-            console.log(`[CLEANUP] Removed old message: "${msg}"`);
+            //console.log(`[CLEANUP] Removed old message: "${msg}"`);
           }
         }
       },

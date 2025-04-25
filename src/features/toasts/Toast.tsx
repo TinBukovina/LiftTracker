@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { css } from "../../../styled-system/css";
-import IconTemplate from "../SecondaryNavigation/IconTemplate";
+import IconTemplate from "../secondaryNavigation/IconTemplate";
 import {
   checkmarkSvgInfo,
   closeSvgInfo,

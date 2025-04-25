@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import React, { useState } from "react";
 
 import { css } from "../../../../styled-system/css";
-import Logo from "../../SecondaryNavigation/Logo";
 import {
   checkPasswordStrength,
   validateAllInputs,
@@ -11,6 +10,11 @@ import { uppercaseFirstLetter } from "../../../utils/helperFunction";
 import { useToast } from "../../toasts/ToastContext";
 import InputComponent from "../components/InputComponent";
 import FormButton from "../components/FormButton";
+import {
+  SignupCredentialsInterface,
+  useSignup,
+} from "../customHooks/useSignup";
+import Logo from "../../secondaryNavigation/Logo";
 
 export interface SignUpFormData {
   firstName: {
@@ -42,23 +46,23 @@ export interface SignUpFormData {
 export default function Signup() {
   const [formData, setFormData] = useState<SignUpFormData>({
     firstName: {
-      value: "",
+      value: "Tin",
       required: true,
     },
     secondName: {
-      value: "",
+      value: "Bukovina",
       required: false,
     },
     email: {
-      value: "",
+      value: "pawevix747@asaption.com",
       required: true,
     },
     password: {
-      value: "",
+      value: "random123!",
       required: true,
     },
     repeatPassword: {
-      value: "",
+      value: "random123!",
       required: true,
     },
   });
@@ -66,6 +70,7 @@ export default function Signup() {
   const [passwordStrength, setPasswordStrength] = useState<number | null>(null);
 
   const { addNewToast } = useToast();
+  const { signup } = useSignup();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -96,7 +101,17 @@ export default function Signup() {
       return;
     }
 
-    console.log("Form data\n", formData);
+    //console.log("Form data\n", formData);
+    const loginCredentials: SignupCredentialsInterface = {
+      email: formData.email.value,
+      fullName: formData.firstName.value.concat(
+        " " + formData.secondName.value
+      ),
+      password: formData.password.value,
+    };
+
+    //console.log(loginCredentials);
+    signup(loginCredentials);
   };
 
   return (

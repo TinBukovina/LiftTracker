@@ -1,12 +1,13 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AppLayout from "./UI/AppLayout";
+import AppLayout from "./pages/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import RandomPage from "./pages/RandomPage";
 import Login from "./features/authentification/pages/Login";
 import Signup from "./features/authentification/pages/Signup";
 import { useToast } from "./features/toasts/ToastContext";
-import Toast from "./features/toasts/toast";
+import Toast from "./features/toasts/Toast";
+import ProtectRoute from "./features/authentification/modules/ProtectedRoute";
+import TrainingPage from "./features/trainingFeatures/pages/TrainingPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,14 +20,18 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
+    element: (
+      <ProtectRoute>
+        <AppLayout />
+      </ProtectRoute>
+    ),
     children: [
-      { index: true, element: <RandomPage /> },
-      { path: "/home", element: <RandomPage /> },
-      { path: "/analytics", element: <RandomPage /> },
-      { path: "/account", element: <RandomPage /> },
-      { path: "/settings", element: <RandomPage /> },
-      { path: "/info", element: <RandomPage /> },
+      { index: true, element: <TrainingPage /> },
+      { path: "/home", element: <TrainingPage /> },
+      { path: "/analytics", element: <TrainingPage /> },
+      { path: "/account", element: <TrainingPage /> },
+      { path: "/settings", element: <TrainingPage /> },
+      { path: "/info", element: <TrainingPage /> },
     ],
   },
   {

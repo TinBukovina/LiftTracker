@@ -9,10 +9,12 @@ import { useUser } from "../customHooks/useUser";
 
 interface LoggedUserContextType {
   loggedUserId: string;
+  setLoggedUserId: (value: string) => void;
 }
 
 const LoggedUserContext = createContext<LoggedUserContextType>({
   loggedUserId: "",
+  setLoggedUserId: () => {},
 });
 
 interface LoggedUserProps {
@@ -36,6 +38,7 @@ export const LoggedUserProvider: React.FC<LoggedUserProps> = ({ children }) => {
 
   const contextValue = {
     loggedUserId,
+    setLoggedUserId,
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { css } from "../../../styled-system/css";
-import IconTemplate from "./IconTemplate";
 import { searchSvgInfo, SvgReturnType } from "../../utils/svgPaths";
+import IconTemplate from "./IconTemplate";
 
 export default function Search() {
   const [isHovered, setIsHovered] = useState<boolean>(false);

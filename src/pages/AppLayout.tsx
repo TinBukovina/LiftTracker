@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { css } from "../../styled-system/css";
 
-import SecondaryNavigation from "../features/SecondaryNavigation/SecondaryNavigation";
-import SideNavigation from "../features/PrimaryNavigation/SideNavigation";
-import { Center } from "../../styled-system/jsx";
+import SecondaryNavigation from "../features/secondaryNavigation/SecondaryNavigation";
+import SideNavigation from "../features/primaryNavigation/SideNavigation";
 
 export default function AppLayout() {
   return (
@@ -24,9 +23,9 @@ export default function AppLayout() {
         })}
       >
         <SideNavigation />
-        <Center className={css({ padding: "40px" })}>
+        <div className={css({ padding: "2rem", width: "100%" })}>
           <Outlet />
-        </Center>
+        </div>
       </div>
     </div>
   );

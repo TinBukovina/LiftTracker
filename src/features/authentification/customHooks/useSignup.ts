@@ -4,6 +4,12 @@ import { signup as signupApi } from "../services/apiAuth";
 import { useToast } from "../../toasts/ToastContext";
 import { useNavigate } from "react-router-dom";
 
+export interface SignupCredentialsInterface {
+  email: string;
+  password: string;
+  fullName: string;
+}
+
 export function useSignup() {
   const { addNewToast } = useToast();
   const navigate = useNavigate();
@@ -14,7 +20,14 @@ export function useSignup() {
     reset,
     data,
   } = useMutation({
-    mutationFn: signupApi,
+    mutationFn: async ({
+      email,
+      password,
+      fullName,
+    }: SignupCredentialsInterface) => {
+      const result = await signupApi({ email, password, fullName });
+      return result;
+    },
     onSuccess: () => {
       addNewToast("Successfuly created user.", "positive");
       navigate("/login", { replace: true });

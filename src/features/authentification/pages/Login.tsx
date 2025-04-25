@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { css } from "../../../../styled-system/css";
 import { NavLink } from "react-router-dom";
 
-import Logo from "../../SecondaryNavigation/Logo";
 import { validateAllInputs } from "../utils/validateInputs";
 import { uppercaseFirstLetter } from "../../../utils/helperFunction";
 import { useToast } from "../../toasts/ToastContext";
 import InputComponent from "../components/InputComponent";
 import FormButton from "../components/FormButton";
 import { LoginCredentialInteface, useLogin } from "../customHooks/useLogin";
+import { useLoggedUserInfo } from "../context/LoggedUserContext";
+import Logo from "../../secondaryNavigation/Logo";
 
 interface LoginFormData {
   password: {
@@ -39,6 +40,7 @@ export default function Login() {
   const [, setInputError] = useState<string>("");
   const { addNewToast } = useToast();
   const { login, isLoading } = useLogin();
+  const { setLoggedUserId } = useLoggedUserInfo();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -71,7 +73,11 @@ export default function Login() {
       password: formData.password.value,
     };
 
-    login(loginCredentials);
+    login(loginCredentials, {
+      onSettled: (data) => {
+        setLoggedUserId(data?.user.id || "");
+      },
+    });
   };
 
   return (

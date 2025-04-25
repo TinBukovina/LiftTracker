@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { css } from "../../../styled-system/css";
-import IconTemplate from "../SecondaryNavigation/IconTemplate";
 import NavLink from "./NavLink";
 import {
   accountSvgInfo,
@@ -15,6 +14,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { useUser } from "../authentification/customHooks/useUser";
 import { useLogout } from "../authentification/customHooks/useLogout";
+import IconTemplate from "../SecondaryNavigation/IconTemplate";
 
 export default function SideNavigation() {
   const location = useLocation();
@@ -41,7 +41,7 @@ export default function SideNavigation() {
         justifyContent: "space-between",
 
         padding: "2rem 1rem",
-        width: "230px",
+        minWidth: "230px",
 
         border: "2px solid transparent",
         borderRightColor: "effects.border",
