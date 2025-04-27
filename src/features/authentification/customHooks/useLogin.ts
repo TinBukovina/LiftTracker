@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { login as loginApi } from "../services/apiAuth";
 import { useToast } from "../../toasts/ToastContext";
+import { useLoggedUserInfo } from "../context/LoggedUserContext";
+import { navLinks } from "../../primaryNavigation/NavLinksConstants";
 
 export interface LoginCredentialInteface {
   email: string;
@@ -18,6 +20,7 @@ export function useLogin() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { addNewToast } = useToast();
+  const { setLoggedUserId } = useLoggedUserInfo();
 
   const {
     mutate: login,
@@ -31,8 +34,14 @@ export function useLogin() {
       console.log(userData);
       queryClient.setQueryData(["user"], userData.user);
 
+      console.log(
+        "Setting loggedUserId in useLogin, with id: ",
+        userData.user.id
+      );
+      setLoggedUserId(userData.user.id);
+
       addNewToast("Successfuly logged in.", "positive");
-      navigate("/", { replace: true });
+      navigate(navLinks.trainingSplits, { replace: true });
     },
     onError: (err: AuthError) => {
       console.log("Error\n", err);

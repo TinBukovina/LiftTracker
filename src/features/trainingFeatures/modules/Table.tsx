@@ -1,8 +1,13 @@
 import { css } from "../../../../styled-system/css";
 import TableHeader from "../components/TableHeader";
 import TableRow from "../components/TableRow";
+import { TrainingSplitInterface } from "../types/trainingEntities";
 
-export default function Table() {
+interface TableProps {
+  data: TrainingSplitInterface[];
+}
+
+export default function Table({ data }: TableProps) {
   return (
     <div
       className={css({
@@ -39,9 +44,9 @@ export default function Table() {
           },
         })}
       >
-        <TableRow />
-
-        <TableRow />
+        {data.length
+          ? data.map((el) => <TableRow entity={el} />)
+          : "There is no data on this user"}
       </div>
     </div>
   );

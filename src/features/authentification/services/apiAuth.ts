@@ -1,4 +1,6 @@
+import { AuthResponse } from "@supabase/supabase-js";
 import supabase from "../../../services/supabse";
+import { AuthResponseInterface } from "../types/userEntity";
 
 export async function login({
   email,
@@ -6,8 +8,8 @@ export async function login({
 }: {
   email: string;
   password: string;
-}) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+}): Promise<AuthResponseInterface> {
+  const { data, error }: AuthResponse = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -17,6 +19,7 @@ export async function login({
     throw new Error("There was a error while running login, apiAuth");
   }
 
+  console.log("DATATATATATA", data);
   return data;
 }
 

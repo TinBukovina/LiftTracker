@@ -1,12 +1,15 @@
 import { css } from "../../../../styled-system/css";
+import { formatDate } from "../../../utils/helperFunction";
+import { TrainingSplitInterface } from "../types/trainingEntities";
 import Button from "./Button";
 import StatusCode from "./StatusCode";
 
 interface TableRowProps {
+  entity: TrainingSplitInterface;
   lastChild?: boolean;
 }
 
-export default function TableRow({ lastChild = false }: TableRowProps) {
+export default function TableRow({ entity, lastChild = false }: TableRowProps) {
   return (
     <div
       className={css({
@@ -31,16 +34,20 @@ export default function TableRow({ lastChild = false }: TableRowProps) {
         },
       })}
     >
-      <span>Push/Pull/Legs</span>
+      <span>{entity.name}</span>
       <span
         className={css({
           color: "typography.secondaryText",
         })}
       >
-        2025-04-01
+        {formatDate(entity.created_at)}
       </span>
-      <StatusCode type="ongoing" />
-      <Button>Finish</Button>
+      {entity.is_active ? (
+        <StatusCode type="ongoing" />
+      ) : (
+        <StatusCode type="finished" />
+      )}
+      {entity.is_active ? <Button>Finish</Button> : <Button>Activate</Button>}
     </div>
   );
 }

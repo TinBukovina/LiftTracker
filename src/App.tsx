@@ -8,6 +8,9 @@ import { useToast } from "./features/toasts/ToastContext";
 import Toast from "./features/toasts/Toast";
 import ProtectRoute from "./features/authentification/modules/ProtectedRoute";
 import TrainingPage from "./features/trainingFeatures/pages/TrainingPage";
+import NotAvailablePage from "./pages/NotAvailablePage";
+import TrainingSplitWindow from "./features/trainingFeatures/modules/TrainingSplitModul";
+import { LoggedUserProvider } from "./features/authentification/context/LoggedUserContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,17 +24,26 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ProtectRoute>
-        <AppLayout />
-      </ProtectRoute>
+      <LoggedUserProvider>
+        <ProtectRoute>
+          <AppLayout />
+        </ProtectRoute>
+      </LoggedUserProvider>
     ),
     children: [
       { index: true, element: <TrainingPage /> },
-      { path: "/home", element: <TrainingPage /> },
-      { path: "/analytics", element: <TrainingPage /> },
-      { path: "/account", element: <TrainingPage /> },
-      { path: "/settings", element: <TrainingPage /> },
-      { path: "/info", element: <TrainingPage /> },
+      {
+        path: "/trainingSplits",
+        element: <TrainingPage />,
+        children: [
+          { index: true, element: <TrainingSplitWindow /> },
+          { path: ":id", element: <NotAvailablePage /> },
+        ],
+      },
+      { path: "/analytics", element: <NotAvailablePage /> },
+      { path: "/account", element: <NotAvailablePage /> },
+      { path: "/settings", element: <NotAvailablePage /> },
+      { path: "/info", element: <NotAvailablePage /> },
     ],
   },
   {
@@ -50,7 +62,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
 
       <>
         {toasts.map((toast) => (

@@ -14,7 +14,8 @@ import {
 import { useLocation } from "react-router-dom";
 import { useUser } from "../authentification/customHooks/useUser";
 import { useLogout } from "../authentification/customHooks/useLogout";
-import IconTemplate from "../SecondaryNavigation/IconTemplate";
+import IconTemplate from "../secondaryNavigation/IconTemplate";
+import { navLinks } from "./NavLinksConstants";
 
 export default function SideNavigation() {
   const location = useLocation();
@@ -55,9 +56,10 @@ export default function SideNavigation() {
         })}
       >
         <NavLink
-          to="/home"
+          to={navLinks.trainingSplits}
           isActive={
-            location.pathname.includes("home") || location.pathname.length === 1
+            location.pathname.includes("trainingSplits") ||
+            location.pathname.length === 1
           }
         >
           <IconTemplate
@@ -69,7 +71,7 @@ export default function SideNavigation() {
           Home
         </NavLink>
         <NavLink
-          to="/analytics"
+          to={navLinks.analytics}
           isActive={location.pathname.includes("analytics")}
         >
           <IconTemplate
@@ -80,7 +82,10 @@ export default function SideNavigation() {
           />
           Analytics
         </NavLink>
-        <NavLink to="/account" isActive={location.pathname.includes("account")}>
+        <NavLink
+          to={navLinks.account}
+          isActive={location.pathname.includes("account")}
+        >
           <IconTemplate
             width="24"
             height="24"
@@ -90,7 +95,7 @@ export default function SideNavigation() {
           Account
         </NavLink>
         <NavLink
-          to="/settings"
+          to={navLinks.settings}
           isActive={location.pathname.includes("settings")}
         >
           <IconTemplate
@@ -101,7 +106,10 @@ export default function SideNavigation() {
           />
           Settings
         </NavLink>
-        <NavLink to="/info" isActive={location.pathname.includes("info")}>
+        <NavLink
+          to={navLinks.info}
+          isActive={location.pathname.includes("info")}
+        >
           <IconTemplate
             width="24"
             height="24"
@@ -113,7 +121,7 @@ export default function SideNavigation() {
       </div>
       <div>
         <NavLink
-          to="/login"
+          to={navLinks.login}
           handleClick={handleLogout}
           isActive={location.pathname.includes("login")}
         >
