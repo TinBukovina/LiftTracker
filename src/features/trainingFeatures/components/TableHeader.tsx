@@ -1,16 +1,24 @@
+import { ReactNode } from "react";
 import { css } from "../../../../styled-system/css";
 
-export default function TableHeader() {
+interface TableHeaderProps {
+  children: ReactNode;
+  numOfCols: number;
+  isLastColumnEmpty?: boolean;
+  useLeftAlign?: boolean;
+}
+
+export default function TableHeader({
+  children,
+  numOfCols,
+  isLastColumnEmpty = false,
+  useLeftAlign = false,
+}: TableHeaderProps) {
   return (
     <div
       className={css({
         position: "sticky",
         top: "0",
-
-        display: "grid",
-        gridTemplateColumns: "2fr 2fr 2fr 1fr",
-        alignItems: "center",
-        gap: "1rem",
 
         padding: "1rem 2rem",
 
@@ -21,11 +29,18 @@ export default function TableHeader() {
         fontWeight: "semibold",
         color: "neutrals.white200",
       })}
+      style={
+        !useLeftAlign
+          ? {
+              display: "grid",
+              gridTemplateColumns: `repeat(${numOfCols}, 2fr) ${isLastColumnEmpty ? "1fr" : ""}`,
+              alignItems: "center",
+              gap: "1rem",
+            }
+          : { display: "flex", alignItems: "center", gap: "1.5rem" }
+      }
     >
-      <span>Name</span>
-      <span>Created at</span>
-      <span>Status</span>
-      <span></span>
+      {children}
     </div>
   );
 }

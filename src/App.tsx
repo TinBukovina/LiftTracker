@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AppLayout from "./pages/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import AppLayout from "./pages/AppLayout";
 import Login from "./features/authentification/pages/Login";
 import Signup from "./features/authentification/pages/Signup";
 import { useToast } from "./features/toasts/ToastContext";
@@ -9,8 +10,11 @@ import Toast from "./features/toasts/Toast";
 import ProtectRoute from "./features/authentification/modules/ProtectedRoute";
 import TrainingPage from "./features/trainingFeatures/pages/TrainingPage";
 import NotAvailablePage from "./pages/NotAvailablePage";
-import TrainingSplitWindow from "./features/trainingFeatures/modules/TrainingSplitModul";
 import { LoggedUserProvider } from "./features/authentification/context/LoggedUserContext";
+import TrainingSplitDaysModule from "./features/trainingFeatures/modules/TrainingSplitDaysModule";
+import TrainingSplitModule from "./features/trainingFeatures/modules/TrainingSplitModul";
+import TrainingDayModule from "./features/trainingFeatures/modules/TrainingDayModule";
+import TrainingDayHistoryModule from "./features/trainingFeatures/modules/TrainingDayHistoryModule";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,8 +40,22 @@ const router = createBrowserRouter([
         path: "/trainingSplits",
         element: <TrainingPage />,
         children: [
-          { index: true, element: <TrainingSplitWindow /> },
-          { path: ":id", element: <NotAvailablePage /> },
+          {
+            index: true,
+            element: <TrainingSplitModule />,
+          },
+          {
+            path: ":id",
+            element: <TrainingSplitDaysModule />,
+          },
+          {
+            path: ":id/:trainingDayName",
+            element: <TrainingDayModule />,
+          },
+          {
+            path: ":id/:trainingDayName/history",
+            element: <TrainingDayHistoryModule />,
+          },
         ],
       },
       { path: "/analytics", element: <NotAvailablePage /> },

@@ -10,6 +10,7 @@ export default function BreadCrumbs({ links }: BreadCrumbsProps) {
       {links.map((link, index) =>
         index !== links.length - 1 ? (
           <span
+            key={`${link}${index}`}
             className={css({
               color: "breadCrumbs.inActive",
             })}
@@ -18,6 +19,7 @@ export default function BreadCrumbs({ links }: BreadCrumbsProps) {
           </span>
         ) : (
           <span
+            key={`${link}${index}`}
             className={css({
               color: "breadCrumbs.active",
             })}

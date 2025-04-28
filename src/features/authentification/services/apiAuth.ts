@@ -1,4 +1,4 @@
-import { AuthResponse } from "@supabase/supabase-js";
+import { AuthResponse, User } from "@supabase/supabase-js";
 import supabase from "../../../services/supabse";
 import { AuthResponseInterface } from "../types/userEntity";
 
@@ -23,7 +23,7 @@ export async function login({
   return data;
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<User | null> {
   const { data: session } = await supabase.auth.getSession();
 
   if (!session.session) return null;
@@ -55,7 +55,7 @@ export async function signup({
   fullName: string;
   email: string;
   password: string;
-}) {
+}): Promise<AuthResponseInterface> {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,

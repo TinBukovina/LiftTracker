@@ -1,13 +1,20 @@
+import { ReactNode } from "react";
 import { css } from "../../../../styled-system/css";
 import TableHeader from "../components/TableHeader";
-import TableRow from "../components/TableRow";
-import { TrainingSplitInterface } from "../types/trainingEntities";
 
 interface TableProps {
-  data: TrainingSplitInterface[];
+  children: ReactNode;
+  headers: string[];
+  isLastColumnEmpty?: boolean;
+  useLeftAlign?: boolean;
 }
 
-export default function Table({ data }: TableProps) {
+export default function Table({
+  children,
+  headers,
+  isLastColumnEmpty = false,
+  useLeftAlign = false,
+}: TableProps) {
   return (
     <div
       className={css({
@@ -24,7 +31,16 @@ export default function Table({ data }: TableProps) {
         overflow: "hidden",
       })}
     >
-      <TableHeader />
+      <TableHeader
+        numOfCols={headers.length}
+        isLastColumnEmpty={isLastColumnEmpty}
+        useLeftAlign={useLeftAlign}
+      >
+        {headers.map((el) => (
+          <span key={el}>{el}</span>
+        ))}
+        {isLastColumnEmpty ? <span></span> : ""}
+      </TableHeader>
       <div
         className={css({
           flex: "1",
@@ -44,9 +60,7 @@ export default function Table({ data }: TableProps) {
           },
         })}
       >
-        {data.length
-          ? data.map((el) => <TableRow entity={el} />)
-          : "There is no data on this user"}
+        {children}
       </div>
     </div>
   );

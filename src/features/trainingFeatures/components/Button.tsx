@@ -10,6 +10,8 @@ interface ButtonProps {
   backgroundClr?: string;
   clr?: string;
   type?: "normal" | "positive" | "negative";
+  disabled?: boolean;
+  onClick?: () => void;
   svgFunction?: () => SvgReturnType;
 }
 
@@ -21,11 +23,13 @@ const BaseBtnStyles = {
   padding: "0.5rem 0.75rem",
   width: "fit-content",
   height: "fit-content",
+
+  border: "2px solid transparent",
+  borderRadius: "0.5rem",
 };
 const NormalBtnStyles = {
   backgroundColor: "buttons.bg.normal",
   border: "2px solid token(colors.effects.border)",
-  borderRadius: "0.5rem",
 
   color: "typography.text",
   cursor: "pointer",
@@ -70,6 +74,16 @@ const NegativeBtnStyles = {
     fill: "actions.redLight",
   },
 };
+const DisabledStyles = {
+  backgroundColor: "buttons.bgDisabled.normal",
+  cursort: "default",
+
+  _hover: {
+    backgroundColor: "buttons.bgDisabled.normal",
+    color: "typography.text",
+    fill: "typography.text",
+  },
+};
 
 export default function Button({
   children,
@@ -78,6 +92,8 @@ export default function Button({
   backgroundClr = "",
   clr = "",
   type = "normal",
+  disabled = false,
+  onClick,
   svgFunction = () => {
     return { path: "", viewBox: "" };
   },
@@ -85,24 +101,35 @@ export default function Button({
   const svgInfoRef = useRef<SvgReturnType>(svgFunction());
 
   const btnStyle =
-    type === "positive"
+    type === "positive" && !disabled
       ? { ...BaseBtnStyles, ...PositiveBtnStyles }
-      : type === "negative"
-        ? { ...BaseBtnStyles, ...NegativeBtnStyles }
-        : { ...BaseBtnStyles, ...NormalBtnStyles };
+      : type === "positive" && disabled
+        ? { ...BaseBtnStyles, ...DisabledStyles }
+        : type === "negative" && !disabled
+          ? { ...BaseBtnStyles, ...NegativeBtnStyles }
+          : type === "negative" && disabled
+            ? { ...BaseBtnStyles, ...DisabledStyles }
+            : disabled
+              ? { ...BaseBtnStyles, ...DisabledStyles }
+              : { ...BaseBtnStyles, ...NormalBtnStyles };
 
-  return (
-    <div
-      onClick={() => {
-        console.log(svgInfoRef.current);
-      }}
-      className={css(btnStyle)}
-      style={{
+  const inlineStyles = !disabled
+    ? {
         color: clr || undefined,
         borderColor: borderClr || undefined,
         backgroundColor: backgroundClr || undefined,
         fill: clr || undefined,
-      }}
+      }
+    : {};
+
+  return (
+    <button
+      onClick={onClick}
+      className={css({
+        ...btnStyle,
+      })}
+      disabled={disabled}
+      style={inlineStyles}
     >
       {svgOn && svgInfoRef.current.path != "" ? (
         <span
@@ -120,6 +147,6 @@ export default function Button({
         ""
       )}
       {children}
-    </div>
+    </button>
   );
 }

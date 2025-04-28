@@ -36,9 +36,9 @@ export function useLogin() {
 
       console.log(
         "Setting loggedUserId in useLogin, with id: ",
-        userData.user.id
+        userData.user?.id
       );
-      setLoggedUserId(userData.user.id);
+      setLoggedUserId(userData.user?.id || "");
 
       addNewToast("Successfuly logged in.", "positive");
       navigate(navLinks.trainingSplits, { replace: true });

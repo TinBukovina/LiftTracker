@@ -12,15 +12,15 @@ export default function ProtectRoute({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) navigate("/login");
-    else {
+    else if (!isLoading) {
       console.log(
         "Setting loggedUserId in protectedRoute.tsx with id: " + user?.id
       );
-      setLoggedUserId(user?.id || "");
+      setLoggedUserId(user?.id as string);
     }
   }, [isAuthenticated, isLoading, navigate, setLoggedUserId, user]);
 
   if (isLoading) return "Loading....";
 
-  if (isAuthenticated) return children;
+  if (isAuthenticated && !isLoading) return children;
 }

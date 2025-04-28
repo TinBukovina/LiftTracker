@@ -28,11 +28,8 @@ export const LoggedUserProvider: React.FC<LoggedUserProps> = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("Logged user 1");
-      console.log(user?.id);
       setLoggedUserId(user?.id || "");
     } else {
-      console.log("Logged user 2");
       setLoggedUserId("");
     }
   }, [isAuthenticated, user]);

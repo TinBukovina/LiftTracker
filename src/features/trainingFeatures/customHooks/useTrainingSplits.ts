@@ -11,8 +11,10 @@ export function useTrainingSplits() {
     isPending,
     error,
   } = useQuery<TrainingSplitInterface[]>({
-    queryKey: ["trainingSplits"],
+    queryKey: ["trainingSplits", loggedUserId],
     queryFn: () => getTrainingSplits(loggedUserId),
+    enabled: !!loggedUserId,
+    refetchOnWindowFocus: true,
   });
 
   return {

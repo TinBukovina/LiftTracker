@@ -1,11 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { css } from "../../../../styled-system/css";
+
 import { plusSvgInfo } from "../../../utils/svgPaths";
 import Button from "../components/Button";
 import { useTrainingSplits } from "../customHooks/useTrainingSplits";
 import Table from "./Table";
+import TrainingSplitsTableRow from "../components/TrainingSplitsTableRow";
 
-export default function TrainingSplitWindow() {
+export default function TrainingSplitModule() {
+  const navigate = useNavigate();
   const { isLoading, trainingSplits, error } = useTrainingSplits();
+
+  const headers = ["Name", "Created at", "Status"];
 
   if (isLoading) return "Loading...";
   if (error) {
@@ -14,11 +20,21 @@ export default function TrainingSplitWindow() {
   }
 
   console.log(trainingSplits);
-
-  trainingSplits?.sort(
-    (a, b) =>
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+  trainingSplits
+    ?.sort(
+      (a, b) =>
+        new Date(b.created_at || "").getTime() -
+        new Date(a.created_at || "").getTime()
+    )
+    .sort((a, b) => {
+      if (b.is_active && !a.is_active) {
+        return 1;
+      } else if (a.is_active && !b.is_active) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
 
   return (
     <div
@@ -60,7 +76,19 @@ export default function TrainingSplitWindow() {
         </Button>
       </div>
 
-      <Table data={trainingSplits} />
+      <Table headers={headers} isLastColumnEmpty={true}>
+        {trainingSplits?.length
+          ? trainingSplits.map((el) => (
+              <TrainingSplitsTableRow
+                key={el.id}
+                entity={el}
+                onClick={() => {
+                  navigate(el?.id || "");
+                }}
+              />
+            ))
+          : "There is no data on this user"}
+      </Table>
     </div>
   );
 }

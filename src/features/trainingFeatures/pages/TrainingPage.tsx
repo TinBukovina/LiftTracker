@@ -1,9 +1,26 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { css } from "../../../../styled-system/css";
 
 import BreadCrumbs from "../components/BreadCrumbs";
 
 export default function TrainingPage() {
+  const { id, trainingDayName } = useParams();
+  const location = useLocation();
+
+  const breadCrumbsLinks = ["Training split"];
+  if (id) {
+    breadCrumbsLinks.push("Training day");
+  }
+
+  if (trainingDayName !== "" && trainingDayName) {
+    if (location.pathname.includes("history")) {
+      breadCrumbsLinks.push("History");
+    } else {
+      console.log("Uslo je");
+      breadCrumbsLinks.push("Training");
+    }
+  }
+
   return (
     <div
       className={css({
@@ -28,7 +45,7 @@ export default function TrainingPage() {
         },
       })}
     >
-      <BreadCrumbs links={["Training split"]} />
+      <BreadCrumbs links={breadCrumbsLinks} />
 
       <Outlet />
     </div>
