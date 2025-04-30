@@ -21,13 +21,14 @@ export default function AccountBtn() {
         border: "2px solid token(colors.navigationBtns.border)",
         borderRadius: "md",
 
+        fill: !isHovered ? "typography.text" : "typography.textHover",
+        color: !isHovered ? "typography.text" : "typography.textHover",
         cursor: "pointer",
       })}
     >
       <IconTemplate
         path={svgInfoRef.current.path}
         viewBox={svgInfoRef.current.viewBox}
-        fill={isHovered ? "#0D1625" : "#f4f4f4"}
       />
     </div>
   );

@@ -19,7 +19,7 @@ export default function NavLink({
 
   const activeLinkStyles = isActive
     ? {
-        backgroundColor: "effects.border",
+        backgroundColor: "navigationLinks.bgActive",
 
         color: "typography.linkActive",
         fill: "typography.linkActive",
@@ -47,7 +47,7 @@ export default function NavLink({
         fill: "typography.link",
 
         _hover: {
-          backgroundColor: "effects.border",
+          backgroundColor: "navigationLinks.bgActive",
 
           color: "typography.linkActive",
           fill: "typography.linkActive",

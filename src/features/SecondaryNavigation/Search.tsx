@@ -22,10 +22,11 @@ export default function Search() {
         backgroundColor: !isHovered ? "search.bg" : "search.hoverBg",
         borderRadius: "sm",
         border: !isHovered
-          ? "2px solid transparent"
-          : "2px solid token(colors.surface.s3)",
+          ? "2px solid token(colors.search.border)"
+          : "2px solid token(colors.search.border)",
 
-        color: !isHovered ? "search.text" : "black",
+        color: !isHovered ? "search.text" : "search.hoverText",
+        fill: !isHovered ? "search.text" : "search.hoverText",
         cursor: "pointer",
       })}
     >
@@ -33,12 +34,12 @@ export default function Search() {
         className={css({
           width: "100%",
           maxWidth: "24px",
+          fill: "inherit",
         })}
       >
         <IconTemplate
           viewBox={svgInfoRef.current.viewBox}
           path={svgInfoRef.current.path}
-          fill={isHovered ? "#0D1625" : "#f4f4f4"}
         />
       </div>
 
@@ -53,7 +54,7 @@ export default function Search() {
           width: "100%",
 
           _placeholder: {
-            color: !isHovered ? "search.text" : "black",
+            color: !isHovered ? "search.text" : "search.hoverText",
             fontSize: "md",
           },
           _focus: {

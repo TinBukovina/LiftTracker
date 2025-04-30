@@ -8,7 +8,10 @@ const NavigationDiv = styled("div", {
 
     height: "85px",
 
+    backgroundColor: "navigation.secondary",
     borderBottom: "2px solid token(colors.effects.border)",
+
+    color: "typography.text",
   },
 });
 

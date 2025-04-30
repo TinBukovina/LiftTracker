@@ -17,17 +17,20 @@ export const StyledInput = styled("input", {
     padding: "0.5rem 1rem",
     width: "100%",
 
-    backgroundColor: "effects.border",
+    backgroundColor: "input.bg.form",
+    border: "2px solid token(colors.input.border.form)",
     borderRadius: "sm",
 
-    _disabled: {
-      backgroundColor: "buttons.bgDisabled.form",
-      cursor: "normal",
-      opacity: 0.6,
-      _hover: {
-        backgroundColor: "buttons.bgDisabled.form",
-        border: "2px solid transparent",
-      },
+    color: "typography.text",
+
+    _focus: {
+      outline: "none",
+      borderColor: "input.focus.border",
+    },
+
+    _hover: {
+      outline: "none",
+      borderColor: "input.hover.border",
     },
   },
 });

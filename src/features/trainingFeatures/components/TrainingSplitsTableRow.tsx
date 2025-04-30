@@ -1,3 +1,4 @@
+import React from "react";
 import { css } from "../../../../styled-system/css";
 
 import { formatDate } from "../../../utils/helperFunction";
@@ -9,7 +10,7 @@ import StatusCode from "./StatusCode";
 export interface TrainingSplitTableRowProps {
   entity: TrainingSplitInterface;
   lastChild?: boolean;
-  onClick?: () => void;
+  onClick?: <T extends HTMLElement>(e: React.MouseEvent<T>) => void;
 }
 
 export default function TrainingSplitsTableRow({
@@ -31,7 +32,7 @@ export default function TrainingSplitsTableRow({
 
         fontSize: "md",
         fontWeight: "normal",
-        color: "neutrals.white200",
+        color: "typography.text",
 
         _hover: {
           backgroundColor: "surface.s0",
@@ -62,11 +63,12 @@ export default function TrainingSplitsTableRow({
         <Button
           onClick={() => {
             useUpdateTrainingSplitMutation.mutate({
-              trainingSPlitId: entity.id || "",
+              trainingSplitId: entity.id || "",
               updateData: { is_active: false },
             });
           }}
           disabled={useUpdateTrainingSplitMutation.isPending}
+          center={true}
         >
           Finish
         </Button>
@@ -74,11 +76,12 @@ export default function TrainingSplitsTableRow({
         <Button
           onClick={() => {
             useUpdateTrainingSplitMutation.mutate({
-              trainingSPlitId: entity.id || "",
+              trainingSplitId: entity.id || "",
               updateData: { is_active: true },
             });
           }}
           disabled={useUpdateTrainingSplitMutation.isPending}
+          center={true}
         >
           Activate
         </Button>
@@ -86,7 +89,3 @@ export default function TrainingSplitsTableRow({
     </div>
   );
 }
-
-/*
-
-*/

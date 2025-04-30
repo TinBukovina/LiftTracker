@@ -1,7 +1,12 @@
 import supabase from "../../../services/supabse";
 import {
+  CreatePerformedExerciseInterface,
+  CreatePerformedSetsInterface,
+  CreateTrainingInstanceInterface,
+  ExerciseInterface,
   PerformedExerciseInterface,
   PerformedSetsInterface,
+  TrainingDayExercisesInterface,
   TrainingDayInterface,
   TrainingInstanceInterface,
   TrainingSplitInterface,
@@ -19,9 +24,7 @@ export async function getTrainingSplits(
 
   if (error) {
     console.log(error);
-    throw new Error(
-      "There was a error(getTainingSplits, apiTrainingFeatures.ts)"
-    );
+    throw new Error(error.message);
   }
 
   return trainingSplits as TrainingSplitInterface[];
@@ -38,9 +41,7 @@ export async function updateTrainingSplit(
 
   if (error) {
     console.log(error);
-    throw new Error(
-      "There was a error (updateTrainingSplit, apiTrainingFeatures.ts)"
-    );
+    throw new Error(error.message);
   }
 
   return;
@@ -58,15 +59,13 @@ export async function getTrainingDaysFromTrainingSplit(
 
   if (error) {
     console.log(error);
-    throw new Error(
-      "There was a error (getTrainingDaysFromTrainingSplit, apiTrainingFeatures.ts)"
-    );
+    throw new Error(error.message);
   }
 
-  return data;
+  return data as TrainingDayInterface[];
 }
 
-export async function getTrainingDay(
+/* export async function getTrainingDay(
   trainingDayId: string
 ): Promise<TrainingDayInterface> {
   const { data, error } = await supabase
@@ -84,18 +83,13 @@ export async function getTrainingDay(
 
   console.log(data);
   return data;
-}
+} */
 
 // Training instance entity
 
 export async function getTrainingInstancesWithTrainingDayId(
   trainingDayId: string | undefined
 ): Promise<TrainingInstanceInterface[] | undefined> {
-  if (!trainingDayId || trainingDayId === "") {
-    console.log("Training day id is empty or undefined, id: ", trainingDayId);
-    throw new Error("Training day id is empty or undfined");
-  }
-
   const { data, error } = await supabase
     .from("training_instances")
     .select("*")
@@ -103,12 +97,27 @@ export async function getTrainingInstancesWithTrainingDayId(
 
   if (error) {
     console.log(error);
-    throw new Error(
-      "There was a error (getTrainingInstancesWithTrainingDayId, apiTrainingFeatures.ts)"
-    );
+    throw new Error(error.message);
   }
 
   return data as TrainingInstanceInterface[];
+}
+
+export async function createTrainingInstance(
+  trainingInstanceData: CreateTrainingInstanceInterface
+): Promise<TrainingInstanceInterface> {
+  const { data, error } = await supabase
+    .from("training_instances")
+    .insert([trainingInstanceData])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as TrainingInstanceInterface;
 }
 
 // Performed exercises entity
@@ -116,14 +125,6 @@ export async function getTrainingInstancesWithTrainingDayId(
 export async function getPerformedExercisesWithTrainingInstanceId(
   trainingInstanceId: string
 ): Promise<PerformedExerciseInterface[]> {
-  if (!trainingInstanceId || trainingInstanceId === "") {
-    console.log(
-      "Training instance id is empty or undefined, id: ",
-      trainingInstanceId
-    );
-    throw new Error("Training day instance id is empty or undefined");
-  }
-
   const { data, error } = await supabase
     .from("performed_exercises")
     .select("*")
@@ -131,12 +132,27 @@ export async function getPerformedExercisesWithTrainingInstanceId(
 
   if (error) {
     console.log(error);
-    throw new Error(
-      "There was a error(getPerformedExercisesWithTrainingInstanceId, apiTrainingFeatures.ts)"
-    );
+    throw new Error(error.message);
   }
 
   return data as PerformedExerciseInterface[];
+}
+
+export async function createPerformedExercise(
+  performedExerciseData: CreatePerformedExerciseInterface
+): Promise<PerformedExerciseInterface> {
+  const { data, error } = await supabase
+    .from("performed_exercises")
+    .insert([performedExerciseData])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as PerformedExerciseInterface;
 }
 
 // Performed sets entity
@@ -144,14 +160,6 @@ export async function getPerformedExercisesWithTrainingInstanceId(
 export async function getPerformedSetsFromPerformedExerciseId(
   performedExerciseId: string
 ): Promise<PerformedSetsInterface[]> {
-  if (!performedExerciseId || performedExerciseId === "") {
-    console.log(
-      "Training instance id is empty or undefined, id: ",
-      performedExerciseId
-    );
-    throw new Error("Training instance id is empty or undefined");
-  }
-
   const { data, error } = await supabase
     .from("performed_sets")
     .select("*")
@@ -159,10 +167,62 @@ export async function getPerformedSetsFromPerformedExerciseId(
 
   if (error) {
     console.log(error);
-    throw new Error(
-      "There was a error(getPerformedSetsFromPerformedExerciseId, apiTrainingFeatures.ts)"
-    );
+    throw new Error(error.message);
   }
 
   return data as PerformedSetsInterface[];
+}
+
+export async function createPerformedSet(
+  perforemdSetsData: CreatePerformedSetsInterface
+): Promise<PerformedSetsInterface> {
+  const { data, error } = await supabase
+    .from("performed_sets")
+    .insert([perforemdSetsData])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as PerformedSetsInterface;
+}
+
+// Training day exercises entity
+
+export async function getExercisesFromTrainingDay(
+  trainingDayId: string
+): Promise<TrainingDayExercisesInterface[]> {
+  const { data, error } = await supabase
+    .from("training_day_exercises")
+    .select("*")
+    .eq("training_day_id", trainingDayId);
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as TrainingDayExercisesInterface[];
+}
+
+// Exercise entity
+
+export async function getExercise(
+  exerciseId: string
+): Promise<ExerciseInterface> {
+  const { data, error } = await supabase
+    .from("exercises")
+    .select("*")
+    .eq("id", exerciseId)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as ExerciseInterface;
 }

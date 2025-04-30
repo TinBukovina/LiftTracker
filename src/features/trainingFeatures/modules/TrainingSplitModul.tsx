@@ -9,15 +9,11 @@ import TrainingSplitsTableRow from "../components/TrainingSplitsTableRow";
 
 export default function TrainingSplitModule() {
   const navigate = useNavigate();
-  const { isLoading, trainingSplits, error } = useTrainingSplits();
+  const { isLoading, trainingSplits } = useTrainingSplits();
 
   const headers = ["Name", "Created at", "Status"];
 
   if (isLoading) return "Loading...";
-  if (error) {
-    console.log(error);
-    return "There was a error while running useTrainingSPlits.";
-  }
 
   console.log(trainingSplits);
   trainingSplits
@@ -77,17 +73,34 @@ export default function TrainingSplitModule() {
       </div>
 
       <Table headers={headers} isLastColumnEmpty={true}>
-        {trainingSplits?.length
-          ? trainingSplits.map((el) => (
-              <TrainingSplitsTableRow
-                key={el.id}
-                entity={el}
-                onClick={() => {
+        {trainingSplits?.length ? (
+          trainingSplits.map((el) => (
+            <TrainingSplitsTableRow
+              key={el.id}
+              entity={el}
+              onClick={(e) => {
+                if (!(e.target instanceof HTMLButtonElement))
                   navigate(el?.id || "");
-                }}
-              />
-            ))
-          : "There is no data on this user"}
+              }}
+            />
+          ))
+        ) : (
+          <div
+            className={css({
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+
+              height: "100%",
+
+              color: "typography.secondaryText",
+              cursor: "default",
+              fontSize: "h5",
+            })}
+          >
+            There is no data on this use
+          </div>
+        )}
       </Table>
     </div>
   );

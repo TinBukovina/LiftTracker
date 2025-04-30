@@ -2,9 +2,14 @@ import { SemanticTokens } from "@pandacss/dev";
 
 export const colors: SemanticTokens["colors"] = {
   surface: {
-    s0: { value: { base: "#FDFDFD", _dark: "#0D1625" } },
+    s0: { value: { base: "#F1F1F1", _dark: "#0D1625" } },
     s1: { value: { base: "#F6F8FA", _dark: "#1B2433" } },
     s2: { value: { base: "#EBEBEB", _dark: "#1B2433" } }, // nav
+  },
+  navigation: {
+    primary: { value: { base: "#EBEBEB ", _dark: "#0D1625" } },
+    secondary: { value: { base: "#F6F8FA", _dark: "#0D1625" } },
+    border: { value: { base: "transparent", _dark: "#27303F" } },
   },
   effects: {
     border: { value: { base: "#D1D1D1", _dark: "#27303F" } },
@@ -17,11 +22,100 @@ export const colors: SemanticTokens["colors"] = {
     linkActive: { value: { base: "#535257", _dark: "#F4F4F4" } },
   },
   actions: {
-    green: { value: { base: "#0AA480", _dark: "#0AA480" } },
-    greenLight: { value: { base: "#E7F6F2", _dark: "#E7F6F2" } },
-    red: { value: { base: "#D82222", _dark: "#D82222" } },
-    redLight: { value: { base: "#FBE9E9", _dark: "#FBE9E9" } },
+    green: { value: { base: "#E7F6F2", _dark: "#0AA480" } },
+    greenLight: { value: { base: "#0AA480", _dark: "#E7F6F2" } },
+    red: { value: { base: "#FBE9E9", _dark: "#D82222" } },
+    redLight: { value: { base: "#D82222", _dark: "#FBE9E9" } },
   },
+  search: {
+    text: { value: { base: "#535257", _dark: "#F4F4F4" } },
+    hoverText: { value: { base: "#F4F4F4", _dark: "#232225" } },
+    bg: { value: { base: "#FDFDFD", _dark: "#1B2433" } },
+    hoverBg: { value: { base: "#1B2433", _dark: "#FDFDFD" } },
+    border: { value: { base: "#D1D1D1", _dark: "#1B2433" } },
+  },
+  navigationBtns: {
+    bg: { value: { base: "#FDFDFD", _dark: "#0D1625" } },
+    bgHover: { value: { base: "#232225", _dark: "#F4F4F4" } },
+    border: { value: { base: "#D1D1D1", _dark: "#27303F" } },
+  },
+  navigationLinks: {
+    bg: { value: { base: "transparent", _dark: "transparent" } },
+    bgActive: { value: { base: "#FDFDFD", _dark: "#27303F" } },
+    bgHover: { value: { base: "#FDFDFD", _dark: "#F4F4F4" } },
+    border: { value: { base: "#D1D1D1", _dark: "#27303F" } },
+  },
+  input: {
+    bg: {
+      form: { value: { base: "#FDFDFD", _dark: "#27303F" } },
+    },
+    border: {
+      form: { value: { base: "#D1D1D1", _dark: "#27303F" } },
+    },
+    focus: {
+      border: {
+        value: { base: "#232225", _dark: "#27303F" },
+      },
+    },
+    hover: {
+      border: {
+        value: { base: "#232225", _dark: "#FDFDFD" },
+      },
+    },
+  },
+  buttons: {
+    bg: {
+      normal: {
+        value: { base: "#F4F4F4", _dark: "#0D1625" },
+      },
+      form: {
+        value: { base: "#2E2D30", _dark: "#F4F4F4" },
+      },
+    },
+    bgHover: {
+      normal: {
+        value: { base: "#2E2D30", _dark: "#F4F4F4" },
+      },
+      form: {
+        value: { base: "#F4F4F4", _dark: "#0D1625" },
+      },
+    },
+    bgDisabled: {
+      normal: {
+        value: {
+          base: "rgba(140, 139, 142, 0.55)",
+          _dark: "rgba(140, 139, 142, 0.55)",
+        },
+      },
+      form: {
+        value: {
+          base: "rgba(140, 139, 142, 0.55)",
+          _dark: "rgba(140, 139, 142, 0.55)",
+        },
+      },
+    },
+    text: {
+      normal: {
+        value: { base: "#0D1625", _dark: "#F4F4F4" },
+      },
+      form: {
+        value: { base: "#F4F4F4", _dark: "#0D1625" },
+      },
+    },
+    textHover: {
+      normal: {
+        value: { base: "#F4F4F4", _dark: "#0D1625" },
+      },
+      form: {
+        value: { base: "#0D1625", _dark: "#F4F4F4" },
+      },
+    },
+  },
+  breadCrumbs: {
+    active: { value: { base: "", _dark: "#CAC9CB" } },
+    inActive: { value: { base: "", _dark: "#8C8B8E" } },
+  },
+  /* */
   neutrals: {
     white200: { value: { base: "#F4F4F4", _dark: "#F4F4F4" } },
     white600: { value: { base: "#D1D1D1", _dark: "#D1D1D1" } },
@@ -29,63 +123,6 @@ export const colors: SemanticTokens["colors"] = {
     black800: { value: { base: "#2E2D30", _dark: "#2E2D30" } },
     gray300: { value: { base: "#8C8B8E", _dark: "#8C8B8E" } },
     gray500: { value: { base: "#535257", _dark: "#535257" } },
-  },
-  search: {
-    text: { value: { base: "#fff", _dark: "#F4F4F4" } },
-    HoverText: { value: { base: "#fff", _dark: "#232225" } },
-    bg: { value: { base: "#fff", _dark: "#1B2433" } },
-    hoverBg: { value: { base: "#fff", _dark: "#FDFDFD" } },
-  },
-  navigationBtns: {
-    bg: { value: { base: "#fff", _dark: "#0D1625" } },
-    bgHover: { value: { base: "#fff", _dark: "#F4F4F4" } },
-    border: { value: { base: "#fff", _dark: "#27303F" } },
-  },
-  buttons: {
-    bg: {
-      normal: {
-        value: { base: "", _dark: "#0D1625" },
-      },
-      form: {
-        value: { base: "", _dark: "#F4F4F4" },
-      },
-    },
-    bgHover: {
-      normal: {
-        value: { base: "", _dark: "#F4F4F4" },
-      },
-      form: {
-        value: { base: "", _dark: "#0D1625" },
-      },
-    },
-    bgDisabled: {
-      normal: {
-        value: { base: "", _dark: "rgba(140, 139, 142, 0.55)" },
-      },
-      form: {
-        value: { base: "", _dark: "rgba(140, 139, 142, 0.55)" },
-      },
-    },
-    text: {
-      normal: {
-        value: { base: "", _dark: "" },
-      },
-      form: {
-        value: { base: "", _dark: "#0D1625" },
-      },
-    },
-    textHover: {
-      normal: {
-        value: { base: "", _dark: "" },
-      },
-      form: {
-        value: { base: "", _dark: "#F4F4F4" },
-      },
-    },
-  },
-  breadCrumbs: {
-    active: { value: { base: "", _dark: "#CAC9CB" } },
-    inActive: { value: { base: "", _dark: "#8C8B8E" } },
   },
 };
 

@@ -72,6 +72,11 @@ export default function Signup() {
   const { addNewToast } = useToast();
   const { signup } = useSignup();
 
+  document.documentElement.classList.toggle(
+    "dark",
+    JSON.parse(localStorage.getItem("theme_lift_tracker") || "false")
+  );
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -145,6 +150,8 @@ export default function Signup() {
         <p
           className={css({
             marginBottom: "1.5rem",
+
+            color: "typography.text",
             fontSize: "h5",
             fontWeight: "semibold",
             textAlign: "center",

@@ -37,14 +37,13 @@ export function useTrainingInstance(trainingDayId: string | undefined) {
         const preformedExercises =
           await getPerformedExercisesWithTrainingInstanceId(instance.id);
 
+        console.log("instance\n", instance);
         const data = {
           date: instance.date,
           exercises: [] as TrainingInstsanceCustomInterface[],
         };
 
         for (const exePerfomance of preformedExercises) {
-          //
-
           const perforemdSets = await getPerformedSetsFromPerformedExerciseId(
             exePerfomance.id
           );

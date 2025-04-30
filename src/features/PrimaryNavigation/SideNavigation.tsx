@@ -44,8 +44,9 @@ export default function SideNavigation() {
         padding: "2rem 1rem",
         minWidth: "230px",
 
+        backgroundColor: "navigation.primary",
         border: "2px solid transparent",
-        borderRightColor: "effects.border",
+        borderRightColor: "navigation.border",
       })}
     >
       <div

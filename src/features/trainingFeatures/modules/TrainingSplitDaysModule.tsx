@@ -8,20 +8,13 @@ import { useTrainingSplits } from "../customHooks/useTrainingSplits";
 export default function TrainingSplitDaysModule() {
   const { id } = useParams();
   const { trainingDays, isLoading } = useTrainingDays(id!);
-  const {
-    trainingSplits,
-    isLoading: isLoadingTrainingSPlit,
-    error,
-  } = useTrainingSplits();
+  const { trainingSplits, isLoading: isLoadingTrainingSPlit } =
+    useTrainingSplits();
 
   const header = ["Name", "Last trained", "Day", ""];
   const choosenSplit = trainingSplits?.filter((el) => el.id === id).at(0);
 
   if (isLoading || isLoadingTrainingSPlit) return "Loading...";
-  if (error) {
-    console.log(error);
-    return "There was a error while running useTrainingSPlits.";
-  }
 
   return (
     <div

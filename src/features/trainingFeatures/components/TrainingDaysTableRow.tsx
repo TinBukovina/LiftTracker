@@ -33,7 +33,7 @@ export default function TrainingDaysTableRow({
 
         fontSize: "md",
         fontWeight: "normal",
-        color: "neutrals.white200",
+        color: "typography.text",
 
         _hover: {
           backgroundColor: "surface.s0",

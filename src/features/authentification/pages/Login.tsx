@@ -42,6 +42,11 @@ export default function Login() {
   const { login, isLoading } = useLogin();
   const { setLoggedUserId } = useLoggedUserInfo();
 
+  document.documentElement.classList.toggle(
+    "dark",
+    JSON.parse(localStorage.getItem("theme_lift_tracker") || "false")
+  );
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -75,7 +80,7 @@ export default function Login() {
 
     login(loginCredentials, {
       onSettled: (data) => {
-        setLoggedUserId(data?.user.id || "");
+        setLoggedUserId(data?.user?.id || "");
       },
     });
   };
@@ -112,6 +117,8 @@ export default function Login() {
         <p
           className={css({
             marginBottom: "1.5rem",
+
+            color: "typography.text",
             fontSize: "h5",
             fontWeight: "semibold",
             textAlign: "center",

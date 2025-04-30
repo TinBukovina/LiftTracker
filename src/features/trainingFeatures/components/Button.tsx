@@ -4,13 +4,14 @@ import IconTemplate from "../../secondaryNavigation/IconTemplate";
 import { SvgReturnType } from "../../../utils/svgPaths";
 
 interface ButtonProps {
-  children: ReactNode;
+  children?: ReactNode;
   svgOn?: boolean;
   borderClr?: string;
   backgroundClr?: string;
   clr?: string;
   type?: "normal" | "positive" | "negative";
   disabled?: boolean;
+  center?: boolean;
   onClick?: () => void;
   svgFunction?: () => SvgReturnType;
 }
@@ -44,7 +45,7 @@ const NormalBtnStyles = {
 };
 const PositiveBtnStyles = {
   backgroundColor: "actions.greenLight",
-  border: "2px solid token(colors.actions.green)",
+  border: "2px solid token(colors.actions.greenLight)",
   borderRadius: "0.5rem",
 
   color: "actions.green",
@@ -60,7 +61,7 @@ const PositiveBtnStyles = {
 };
 const NegativeBtnStyles = {
   backgroundColor: "actions.redLight",
-  border: "2px solid token(colors.actions.red)",
+  border: "2px solid token(colors.actions.redLight)",
   borderRadius: "0.5rem",
 
   color: "actions.red",
@@ -93,6 +94,7 @@ export default function Button({
   clr = "",
   type = "normal",
   disabled = false,
+  center = false,
   onClick,
   svgFunction = () => {
     return { path: "", viewBox: "" };
@@ -119,6 +121,7 @@ export default function Button({
         borderColor: borderClr || undefined,
         backgroundColor: backgroundClr || undefined,
         fill: clr || undefined,
+        margin: center ? "0 auto" : "",
       }
     : {};
 

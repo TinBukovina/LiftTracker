@@ -76,7 +76,7 @@ const router = createBrowserRouter([
 
 function App() {
   const { toasts, handleToastComplete } = useToast();
-  document.documentElement.classList.add("dark");
+  /* document.documentElement.classList.add("dark"); */
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -90,6 +90,7 @@ function App() {
             id={toast.id}
             onComplete={handleToastComplete}
             isActive={toast.isActive}
+            duration={toast.duration}
           >
             {toast.message}
           </Toast>

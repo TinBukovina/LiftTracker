@@ -6,13 +6,21 @@ import { TrainingSplitInterface } from "../types/trainingEntities";
 export function useTrainingSplits() {
   const { loggedUserId } = useLoggedUserInfo();
 
-  const {
-    data: trainingSplits,
-    isPending,
-    error,
-  } = useQuery<TrainingSplitInterface[]>({
+  const { data: trainingSplits, isPending } = useQuery<
+    TrainingSplitInterface[]
+  >({
     queryKey: ["trainingSplits", loggedUserId],
-    queryFn: () => getTrainingSplits(loggedUserId),
+    queryFn: async (): Promise<TrainingSplitInterface[]> => {
+      try {
+        const response = await getTrainingSplits(loggedUserId);
+
+        return response as TrainingSplitInterface[];
+      } catch (error) {
+        console.log(error);
+
+        return [];
+      }
+    },
     enabled: !!loggedUserId,
     refetchOnWindowFocus: true,
   });
@@ -20,6 +28,5 @@ export function useTrainingSplits() {
   return {
     isLoading: isPending,
     trainingSplits,
-    error: error as Error | null,
   };
 }

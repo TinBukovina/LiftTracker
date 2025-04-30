@@ -10,9 +10,12 @@ export default function AppLayout() {
       className={css({
         display: "grid",
         gridTemplateRows: "85px auto",
+
         height: "100vh",
         maxHeight: "100vh",
+
         backgroundColor: "surface.s0",
+
         color: "typography.text",
         overflow: "hidden",
       })}

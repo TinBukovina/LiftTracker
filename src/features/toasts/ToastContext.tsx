@@ -12,7 +12,7 @@ import { ToastStatus } from "./Toast";
 
 interface ToastContextType {
   toasts: ToastInterface[];
-  addNewToast: (message: string, type: ToastStatus) => void;
+  addNewToast: (message: string, type: ToastStatus, duration?: number) => void;
   handleToastComplete: (id: number) => void;
   startDisplayingToasts: () => void;
   displayToastsSignal: boolean;
@@ -35,63 +35,68 @@ interface ToastInterface {
   message: string;
   type: ToastStatus;
   isActive?: boolean;
+  duration?: number;
 }
-
-const TOAST_DURATION = 5000;
-const BUFFER_TIME = 1000;
 
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastInterface[]>([]);
   const [displayToastsSignal] = useState<boolean>(false);
   const [activeToastId, setActiveToastId] = useState<number | null>(null);
 
+  const TOAST_DURATION = 5;
+  const BUFFER_TIME = 1000;
+
   const toastIdCounterRef = useRef<number>(0);
   const messageHistoryRef = useRef(new Map<string, number>());
 
-  const addNewToast = useCallback((message: string, type: ToastStatus) => {
-    const now = Date.now();
+  const addNewToast = useCallback(
+    (message: string, type: ToastStatus, duration: number = TOAST_DURATION) => {
+      const now = Date.now();
 
-    const lastShown = messageHistoryRef.current.get(message);
-    if (lastShown && now - lastShown < TOAST_DURATION + BUFFER_TIME) {
-      /*  console.log(
+      const lastShown = messageHistoryRef.current.get(message);
+      if (lastShown && now - lastShown < duration * 1000 + BUFFER_TIME) {
+        /*  console.log(
         `[ADD TOAST BLOCKED] Message shown recently: "${message}", ${(now - lastShown) / 1000}s ago`
       ); */
-      return;
-    }
-
-    messageHistoryRef.current.set(message, now);
-
-    setToasts((prevToasts) => {
-      if (prevToasts.some((toast) => toast.message === message)) {
-        return prevToasts;
+        return;
       }
 
-      const newToastId = toastIdCounterRef.current++;
+      messageHistoryRef.current.set(message, now);
 
-      return [
-        ...prevToasts,
-        {
-          id: newToastId,
-          message,
-          type,
-          isActive: prevToasts.length === 0,
-        },
-      ];
-    });
-
-    setTimeout(
-      () => {
-        const cleanupTime = Date.now();
-        for (const [msg, timestamp] of messageHistoryRef.current.entries()) {
-          if (cleanupTime - timestamp > TOAST_DURATION + BUFFER_TIME) {
-            messageHistoryRef.current.delete(msg);
-            //console.log(`[CLEANUP] Removed old message: "${msg}"`);
-          }
+      setToasts((prevToasts) => {
+        if (prevToasts.some((toast) => toast.message === message)) {
+          return prevToasts;
         }
-      },
-      TOAST_DURATION + BUFFER_TIME + 50
-    );
-  }, []);
+
+        const newToastId = toastIdCounterRef.current++;
+
+        return [
+          ...prevToasts,
+          {
+            id: newToastId,
+            message,
+            type,
+            isActive: prevToasts.length === 0,
+            duration,
+          },
+        ];
+      });
+
+      setTimeout(
+        () => {
+          const cleanupTime = Date.now();
+          for (const [msg, timestamp] of messageHistoryRef.current.entries()) {
+            if (cleanupTime - timestamp > duration + BUFFER_TIME) {
+              messageHistoryRef.current.delete(msg);
+              //console.log(`[CLEANUP] Removed old message: "${msg}"`);
+            }
+          }
+        },
+        duration * 100 + BUFFER_TIME + 50
+      );
+    },
+    []
+  );
 
   // 2.
   const handleToastComplete = useCallback((id: number) => {

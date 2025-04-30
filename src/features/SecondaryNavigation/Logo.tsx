@@ -15,8 +15,11 @@ export default function Logo({ size, border = false }: LogoProps) {
 
         minWidth: "230px",
 
-        borderRight: border ? "2px solid token(colors.effects.border)" : "",
+        borderRight: border
+          ? "2px solid token(colors.navigation.border)"
+          : "2px solid token(colors.navigation.border)",
 
+        color: "typography.text",
         fontSize:
           size === 1
             ? "h1"

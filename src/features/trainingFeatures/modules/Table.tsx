@@ -26,21 +26,25 @@ export default function Table({
 
         backgroundColor: "surface.s1",
         border: "2px solid token(colors.effects.border)",
-        borderRadius: "sm",
+        borderRadius: "md",
 
         overflow: "hidden",
       })}
     >
-      <TableHeader
-        numOfCols={headers.length}
-        isLastColumnEmpty={isLastColumnEmpty}
-        useLeftAlign={useLeftAlign}
-      >
-        {headers.map((el) => (
-          <span key={el}>{el}</span>
-        ))}
-        {isLastColumnEmpty ? <span></span> : ""}
-      </TableHeader>
+      {headers.length > 0 ? (
+        <TableHeader
+          numOfCols={headers.length}
+          isLastColumnEmpty={isLastColumnEmpty}
+          useLeftAlign={useLeftAlign}
+        >
+          {headers.map((el) => (
+            <span key={Math.random().toString()}>{el}</span>
+          ))}
+          {isLastColumnEmpty ? <span></span> : ""}
+        </TableHeader>
+      ) : (
+        ""
+      )}
       <div
         className={css({
           flex: "1",

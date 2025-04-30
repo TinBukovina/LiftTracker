@@ -1,6 +1,5 @@
-import React from "react";
 import { css } from "../../../../styled-system/css";
-import { TrainingSplitInterface } from "../types/trainingEntities";
+import { uppercaseFirstLetter } from "../../../utils/helperFunction";
 import { TrainingInstsanceCustomInterface } from "../customHooks/useTrainingInstances";
 
 export interface TrainingSplitTableRowProps {
@@ -16,6 +15,7 @@ export default function TrainingDayHistoryTableRow({
 }: TrainingSplitTableRowProps) {
   return (
     <div
+      onClick={onClick}
       className={css({
         padding: "1rem 2rem",
 
@@ -25,7 +25,7 @@ export default function TrainingDayHistoryTableRow({
 
         fontSize: "md",
         fontWeight: "normal",
-        color: "neutrals.white200",
+        color: "typography.text",
 
         _hover: {
           backgroundColor: "surface.s0",
@@ -45,9 +45,9 @@ export default function TrainingDayHistoryTableRow({
           gap: "1rem",
         })}
       >
-        <span>{entity.name}:</span>
+        <span>{uppercaseFirstLetter(entity.name)}:</span>
         {entity.data.map((performance) => (
-          <span>
+          <span key={performance.id}>
             {performance.weight} x {performance.reps}
           </span>
         ))}

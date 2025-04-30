@@ -22,12 +22,12 @@ export default function TableHeader({
 
         padding: "1rem 2rem",
 
-        backgroundColor: "surface.s1",
-        borderBottom: "2px solid token(colors.neutrals.white200)",
+        backgroundColor: "surface.s2",
+        borderBottom: "2px solid token(colors.typography.text)",
 
         fontSize: "h6",
         fontWeight: "semibold",
-        color: "neutrals.white200",
+        color: "typography.text",
       })}
       style={
         !useLeftAlign

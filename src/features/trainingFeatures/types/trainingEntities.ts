@@ -1,3 +1,5 @@
+// Training split type
+
 export interface TrainingSplitInterface {
   id?: string;
   name?: string;
@@ -9,6 +11,8 @@ export interface TrainingSplitInterface {
 
   [key: string]: string | number | boolean | null | undefined;
 }
+
+// Training day type
 
 export interface TrainingDayInterface {
   id: string;
@@ -22,6 +26,8 @@ export interface TrainingDayInterface {
   [key: string]: string | number | boolean | null | undefined;
 }
 
+// Training instance type
+
 export interface TrainingInstanceInterface {
   id: string;
   user_id: string;
@@ -33,27 +39,50 @@ export interface TrainingInstanceInterface {
   notes: string;
   rating: number;
 }
+export interface CreateTrainingInstanceInterface {
+  user_id: string;
+  training_day_id: string;
+  date: string | null;
+  start_time: string | null;
+  end_time: string | null;
+  is_completed: boolean;
+  notes: string;
+  rating: number;
+}
+
+// Performed exercise type
 
 export interface PerformedExerciseInterface {
   id: string;
-  trainingInstanceId: string;
-  exerciseId: string;
+  training_instance_id: string;
+  exercise_id: string;
   name: string;
   plannedSets: number;
-  planned_reps: number;
+  planned_sets: number;
   is_completed: boolean;
   notes: string;
 }
 export interface PerformedExerciseOptionalInterface {
   id?: string;
-  trainingInstanceId?: string;
-  exerciseId?: string;
+  training_instance_id?: string;
+  exercise_id?: string;
   name?: string;
-  plannedSets?: number;
+  planned_sets?: number;
   planned_reps?: number;
   is_completed?: boolean;
   notes?: string;
 }
+export interface CreatePerformedExerciseInterface {
+  training_instance_id: string;
+  exercise_id: string;
+  name: string;
+  planned_sets: number;
+  planned_reps: number;
+  is_completed: boolean;
+  notes: string;
+}
+
+// Performed sets type
 
 export interface PerformedSetsInterface {
   id: string;
@@ -62,6 +91,7 @@ export interface PerformedSetsInterface {
   reps: number;
   is_completed: boolean;
   notes: string;
+  set_order: number;
 }
 
 export interface PerformedSetsOptionalInterface {
@@ -71,4 +101,31 @@ export interface PerformedSetsOptionalInterface {
   reps?: number;
   is_completed?: boolean;
   notes?: string;
+  set_order?: number;
+}
+
+export interface CreatePerformedSetsInterface {
+  performed_exercise_id: string;
+  weight: number;
+  reps: number;
+  is_completed: boolean;
+  notes: string;
+  set_order: number;
+}
+
+// Training day exercises type
+
+export interface TrainingDayExercisesInterface {
+  id: string;
+  training_day_id: string;
+  exercise_id: string;
+}
+
+// Exercise type
+export interface ExerciseInterface {
+  id: string;
+  name: string;
+  reps_per_set: string;
+  rest_time: string;
+  notes: string;
 }
