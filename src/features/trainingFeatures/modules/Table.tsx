@@ -59,7 +59,7 @@ export default function Table({
             background: "transparent",
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "surface.s0",
+            background: "table.scrollBar",
             borderRadius: "4px",
           },
         })}

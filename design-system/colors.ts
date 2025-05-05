@@ -16,6 +16,7 @@ export const colors: SemanticTokens["colors"] = {
   },
   typography: {
     text: { value: { base: "#232225", _dark: "#F4F4F4" } },
+    textInvert: { value: { base: "#F4F4F4", _dark: "#232225" } },
     textHover: { value: { base: "#F4F4F4", _dark: "#232225" } },
     secondaryText: { value: { base: "#8C8B8E", _dark: "#8C8B8E" } },
     link: { value: { base: "#8C8B8E", _dark: "#8C8B8E" } },
@@ -26,6 +27,8 @@ export const colors: SemanticTokens["colors"] = {
     greenLight: { value: { base: "#0AA480", _dark: "#E7F6F2" } },
     red: { value: { base: "#FBE9E9", _dark: "#D82222" } },
     redLight: { value: { base: "#D82222", _dark: "#FBE9E9" } },
+    borderPositive: { value: { base: "#0AA480", _dark: "#0AA480" } },
+    borderNegative: { value: { base: "#D82222", _dark: "#D82222" } },
   },
   search: {
     text: { value: { base: "#535257", _dark: "#F4F4F4" } },
@@ -110,6 +113,11 @@ export const colors: SemanticTokens["colors"] = {
         value: { base: "#0D1625", _dark: "#F4F4F4" },
       },
     },
+  },
+  table: {
+    header: { value: { base: "#F1F1F1", _dark: "#1B2433" } },
+    scrollBar: { value: { base: "#D1D1D1", _dark: "#0D1625" } },
+    scrollBarSecond: { value: { base: "#D1D1D1", _dark: "#27303F" } },
   },
   breadCrumbs: {
     active: { value: { base: "", _dark: "#CAC9CB" } },

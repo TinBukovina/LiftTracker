@@ -13,25 +13,31 @@ export default function Logo({ size, border = false }: LogoProps) {
         justifyContent: "center",
         alignItems: "center",
 
-        minWidth: "230px",
+        minWidth: {
+          base: "130px",
+          xs: "230px",
+        },
+        height: "100%",
 
-        borderRight: border
-          ? "2px solid token(colors.navigation.border)"
-          : "2px solid token(colors.navigation.border)",
+        borderRight: border ? "2px solid token(colors.navigation.border)" : "",
 
         color: "typography.text",
-        fontSize:
-          size === 1
-            ? "h1"
-            : size === 2
-              ? "h2"
-              : size === 3
-                ? "h3"
-                : size === 4
-                  ? "h4"
-                  : size === 6
-                    ? "h6"
-                    : "h5",
+        fontSize: {
+          base: "1.5rem",
+          xs:
+            size === 1
+              ? "h1"
+              : size === 2
+                ? "h2"
+                : size === 3
+                  ? "h3"
+                  : size === 4
+                    ? "h4"
+                    : size === 6
+                      ? "h6"
+                      : "h5",
+        },
+
         fontWeight: "semibold",
       })}
     >

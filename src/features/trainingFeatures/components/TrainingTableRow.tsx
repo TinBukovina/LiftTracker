@@ -1,26 +1,51 @@
+import { useRef, useState, useEffect } from "react";
 import { css } from "../../../../styled-system/css";
 import { closeSvgInfo } from "../../../utils/svgPaths";
 import Button from "./Button";
 
 export interface TrainingTableRowProps {
   lastChild?: boolean;
+  secondToLastChild?: boolean;
   val1?: string;
   onChange1?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   val2?: string;
   onChange2?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: <T extends HTMLElement>(e: React.MouseEvent<T>) => void;
   onBtnClick?: () => void;
+  startTime?: number | null;
 }
 
 export default function TrainingTableRow({
   lastChild = false,
+  secondToLastChild = false,
   val1,
   onChange1,
   val2,
   onChange2,
   onClick,
   onBtnClick,
+  startTime,
 }: TrainingTableRowProps) {
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+
+  // Set up an interval to update the elapsed time every second
+  useEffect(() => {
+    if (secondToLastChild) {
+      if (!startTime) return;
+
+      console.log(startTime);
+
+      setElapsedSeconds(Math.floor((Date.now() - startTime) / 1000));
+
+      const intervalId = setInterval(() => {
+        const secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
+        setElapsedSeconds(secondsElapsed);
+      }, 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [secondToLastChild, startTime]);
+
   return (
     <div
       onClick={onClick}
@@ -57,6 +82,11 @@ export default function TrainingTableRow({
             outline: "none",
             border: "2px solid token(colors.input.border.form)",
           },
+
+          "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
+            appearance: "none",
+            margin: 0,
+          },
         })}
         type="number"
         placeholder="ENTER"
@@ -77,6 +107,11 @@ export default function TrainingTableRow({
             outline: "none",
             border: "2px solid token(colors.input.border.form)",
           },
+
+          "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
+            appearance: "none",
+            margin: 0,
+          },
         })}
         type="number"
         placeholder="ENTER"
@@ -91,6 +126,18 @@ export default function TrainingTableRow({
           svgFunction={closeSvgInfo}
           onClick={onBtnClick}
         ></Button>
+      )}
+
+      {secondToLastChild ? (
+        <span
+          className={css({
+            color: "typography.secondaryText",
+          })}
+        >
+          {elapsedSeconds}s
+        </span>
+      ) : (
+        ""
       )}
     </div>
   );

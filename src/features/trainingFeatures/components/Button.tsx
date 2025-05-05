@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode, useMemo } from "react";
 import { css } from "../../../../styled-system/css";
 import IconTemplate from "../../secondaryNavigation/IconTemplate";
 import { SvgReturnType } from "../../../utils/svgPaths";
@@ -12,12 +12,15 @@ interface ButtonProps {
   type?: "normal" | "positive" | "negative";
   disabled?: boolean;
   center?: boolean;
-  onClick?: () => void;
+  w?: string;
+  h?: string;
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
   svgFunction?: () => SvgReturnType;
 }
 
 const BaseBtnStyles = {
   display: "flex",
+  justifyContent: "center",
   alignItems: "center",
   gap: "0.25rem",
 
@@ -45,7 +48,7 @@ const NormalBtnStyles = {
 };
 const PositiveBtnStyles = {
   backgroundColor: "actions.greenLight",
-  border: "2px solid token(colors.actions.greenLight)",
+  border: "2px solid token(colors.actions.borderPositive)",
   borderRadius: "0.5rem",
 
   color: "actions.green",
@@ -61,7 +64,7 @@ const PositiveBtnStyles = {
 };
 const NegativeBtnStyles = {
   backgroundColor: "actions.redLight",
-  border: "2px solid token(colors.actions.redLight)",
+  border: "2px solid token(colors.actions.borderNegative)",
   borderRadius: "0.5rem",
 
   color: "actions.red",
@@ -95,12 +98,14 @@ export default function Button({
   type = "normal",
   disabled = false,
   center = false,
+  w,
+  h,
   onClick,
   svgFunction = () => {
     return { path: "", viewBox: "" };
   },
 }: ButtonProps) {
-  const svgInfoRef = useRef<SvgReturnType>(svgFunction());
+  const svgInfo = useMemo(() => svgFunction(), [svgFunction]);
 
   const btnStyle =
     type === "positive" && !disabled
@@ -122,6 +127,8 @@ export default function Button({
         backgroundColor: backgroundClr || undefined,
         fill: clr || undefined,
         margin: center ? "0 auto" : "",
+        width: !children ? "3rem" : w ? w : "",
+        height: !children ? "3rem" : h ? h : "",
       }
     : {};
 
@@ -134,16 +141,16 @@ export default function Button({
       disabled={disabled}
       style={inlineStyles}
     >
-      {svgOn && svgInfoRef.current.path != "" ? (
+      {svgOn && svgInfo.path != "" ? (
         <span
           className={css({
             paddingTop: "0.1rem",
           })}
         >
           <IconTemplate
-            width="1rem"
-            path={svgInfoRef.current.path}
-            viewBox={svgInfoRef.current.viewBox}
+            width={!children ? "100%" : "1rem"}
+            path={svgInfo.path}
+            viewBox={svgInfo.viewBox}
           />
         </span>
       ) : (

@@ -63,7 +63,7 @@ export function useCreateTrainingInstance() {
         predicate: (query) => query.queryKey[0] !== "user",
       });
 
-      return "success";
+      return;
     },
     onSuccess: () => {
       addNewToast("Training successfully finished.", "positive");

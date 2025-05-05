@@ -2,7 +2,10 @@ import supabase from "../../../services/supabse";
 import {
   CreatePerformedExerciseInterface,
   CreatePerformedSetsInterface,
+  CreateTrainingDayExercisesInterface,
+  CreateTrainingDayInterface,
   CreateTrainingInstanceInterface,
+  CreateTrainingSplitInterface,
   ExerciseInterface,
   PerformedExerciseInterface,
   PerformedSetsInterface,
@@ -12,7 +15,7 @@ import {
   TrainingSplitInterface,
 } from "../types/trainingEntities";
 
-// Training Split entity
+// training_splits entity
 
 export async function getTrainingSplits(
   loggedUserId: string
@@ -47,7 +50,39 @@ export async function updateTrainingSplit(
   return;
 }
 
-// Training day entity
+export async function createTrainingSplit(
+  trainingSplitData: CreateTrainingSplitInterface
+): Promise<TrainingSplitInterface> {
+  const { data, error } = await supabase
+    .from("training_splits")
+    .insert([trainingSplitData])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as TrainingSplitInterface;
+}
+
+export async function deleteTrainingSplit(trainingSplitId: string) {
+  console.log(trainingSplitId);
+  const { error } = await supabase
+    .from("training_splits")
+    .delete()
+    .eq("id", trainingSplitId);
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return;
+}
+
+// training_days entity
 
 export async function getTrainingDaysFromTrainingSplit(
   trainingSplitId: string
@@ -63,6 +98,23 @@ export async function getTrainingDaysFromTrainingSplit(
   }
 
   return data as TrainingDayInterface[];
+}
+
+export async function createTrainingDay(
+  trainingDayData: CreateTrainingDayInterface
+): Promise<TrainingDayInterface> {
+  const { data, error } = await supabase
+    .from("training_days")
+    .insert([trainingDayData])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as TrainingDayInterface;
 }
 
 /* export async function getTrainingDay(
@@ -85,7 +137,7 @@ export async function getTrainingDaysFromTrainingSplit(
   return data;
 } */
 
-// Training instance entity
+// training_instances entity
 
 export async function getTrainingInstancesWithTrainingDayId(
   trainingDayId: string | undefined
@@ -120,7 +172,7 @@ export async function createTrainingInstance(
   return data as TrainingInstanceInterface;
 }
 
-// Performed exercises entity
+// performed_exercises entity
 
 export async function getPerformedExercisesWithTrainingInstanceId(
   trainingInstanceId: string
@@ -155,7 +207,7 @@ export async function createPerformedExercise(
   return data as PerformedExerciseInterface;
 }
 
-// Performed sets entity
+// performed_sets entity
 
 export async function getPerformedSetsFromPerformedExerciseId(
   performedExerciseId: string
@@ -190,7 +242,7 @@ export async function createPerformedSet(
   return data as PerformedSetsInterface;
 }
 
-// Training day exercises entity
+// training_day_exercises entity
 
 export async function getExercisesFromTrainingDay(
   trainingDayId: string
@@ -208,7 +260,24 @@ export async function getExercisesFromTrainingDay(
   return data as TrainingDayExercisesInterface[];
 }
 
-// Exercise entity
+export async function createTrainingDayExercise(
+  trainingDayExerciseData: CreateTrainingDayExercisesInterface
+): Promise<TrainingDayExercisesInterface> {
+  const { data, error } = await supabase
+    .from("training_day_exercises")
+    .insert([trainingDayExerciseData])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as TrainingDayExercisesInterface;
+}
+
+// exercises entity
 
 export async function getExercise(
   exerciseId: string
@@ -225,4 +294,17 @@ export async function getExercise(
   }
 
   return data as ExerciseInterface;
+}
+
+export async function getAllExercisesFromDatabase(): Promise<
+  ExerciseInterface[]
+> {
+  const { data, error } = await supabase.from("exercises").select("*");
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data as ExerciseInterface[];
 }

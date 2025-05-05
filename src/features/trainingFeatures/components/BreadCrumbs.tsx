@@ -18,6 +18,8 @@ export default function BreadCrumbs() {
 
   if (id) {
     breadCrumbsLinks.push("Training day");
+  } else if (location.pathname.includes("create")) {
+    breadCrumbsLinks.push("Create training split");
   }
 
   if (trainingDayName !== "" && trainingDayName) {

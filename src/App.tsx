@@ -15,6 +15,8 @@ import TrainingSplitDaysModule from "./features/trainingFeatures/modules/Trainin
 import TrainingSplitModule from "./features/trainingFeatures/modules/TrainingSplitModul";
 import TrainingDayModule from "./features/trainingFeatures/modules/TrainingDayModule";
 import TrainingDayHistoryModule from "./features/trainingFeatures/modules/TrainingDayHistoryModule";
+import CreateTrainingSplitModule from "./features/trainingFeatures/modules/CreateTrainingSplitModule";
+import { NavigationProvider } from "./contexts/NavigationContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +32,9 @@ const router = createBrowserRouter([
     element: (
       <LoggedUserProvider>
         <ProtectRoute>
-          <AppLayout />
+          <NavigationProvider>
+            <AppLayout />
+          </NavigationProvider>
         </ProtectRoute>
       </LoggedUserProvider>
     ),
@@ -56,6 +60,7 @@ const router = createBrowserRouter([
             path: ":id/:trainingDayName/history",
             element: <TrainingDayHistoryModule />,
           },
+          { path: "create", element: <CreateTrainingSplitModule /> },
         ],
       },
       { path: "/analytics", element: <NotAvailablePage /> },

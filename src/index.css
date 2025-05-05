@@ -20,3 +20,6 @@
 html.dark {
   color-scheme: dark;
 }
+
+@media only screen and (max-width: 600px) {
+}

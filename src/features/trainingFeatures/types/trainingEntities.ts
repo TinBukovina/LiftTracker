@@ -12,6 +12,15 @@ export interface TrainingSplitInterface {
   [key: string]: string | number | boolean | null | undefined;
 }
 
+export interface CreateTrainingSplitInterface {
+  name: string;
+  created_at: string;
+  user_id: string;
+  weekly_frequency: number;
+  is_active: boolean;
+  description: string;
+}
+
 // Training day type
 
 export interface TrainingDayInterface {
@@ -24,6 +33,15 @@ export interface TrainingDayInterface {
   training_split_id: string;
 
   [key: string]: string | number | boolean | null | undefined;
+}
+
+export interface CreateTrainingDayInterface {
+  name: string;
+  created_at: string;
+  last_trained: string | null;
+  day_order: number;
+  notes: string;
+  training_split_id: string;
 }
 
 // Training instance type
@@ -117,6 +135,11 @@ export interface CreatePerformedSetsInterface {
 
 export interface TrainingDayExercisesInterface {
   id: string;
+  training_day_id: string;
+  exercise_id: string;
+}
+
+export interface CreateTrainingDayExercisesInterface {
   training_day_id: string;
   exercise_id: string;
 }

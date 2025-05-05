@@ -67,7 +67,14 @@ export default function TrainingSplitModule() {
             List of your training plans and programs
           </p>
         </div>
-        <Button svgOn={true} svgFunction={plusSvgInfo} type="positive">
+        <Button
+          svgOn={true}
+          svgFunction={plusSvgInfo}
+          type="positive"
+          onClick={() => {
+            navigate("create");
+          }}
+        >
           Create
         </Button>
       </div>

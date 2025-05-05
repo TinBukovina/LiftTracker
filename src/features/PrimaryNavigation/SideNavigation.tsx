@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { css } from "../../../styled-system/css";
 import NavLink from "./NavLink";
 import {
@@ -16,12 +16,14 @@ import { useUser } from "../authentification/customHooks/useUser";
 import { useLogout } from "../authentification/customHooks/useLogout";
 import IconTemplate from "../secondaryNavigation/IconTemplate";
 import { navLinks } from "./NavLinksConstants";
+import { useNavigation } from "../../contexts/NavigationContext";
 
 export default function SideNavigation() {
   const location = useLocation();
 
   const { isAuthenticated } = useUser();
   const { logout } = useLogout();
+  const { isNavigationVisible, navigationSide } = useNavigation();
 
   const homeSvgInfoRef = useRef<SvgReturnType>(homeSvgInfo());
   const analyticsSvgInfoRef = useRef<SvgReturnType>(analyticsSvgInfo());
@@ -34,19 +36,36 @@ export default function SideNavigation() {
   const handleLogout = () => {
     logout();
   };
+
   return (
     <div
       className={css({
-        display: "flex",
+        display: isNavigationVisible ? "flex" : "none",
         flexDirection: "column",
         justifyContent: "space-between",
 
         padding: "2rem 1rem",
-        minWidth: "230px",
+        minWidth: {
+          xs: "50px",
+          sm: "130px",
+          md: "230px",
+        },
 
         backgroundColor: "navigation.primary",
         border: "2px solid transparent",
         borderRightColor: "navigation.border",
+
+        transition: "all 0.3s ease",
+
+        ...(navigationSide === "right"
+          ? {
+              borderLeftColor: "navigation.border",
+              position: "absolute",
+              height: "calc(100dvh - 85px)",
+              zIndex: 10,
+              width: "230px",
+            }
+          : {}),
       })}
     >
       <div
@@ -69,7 +88,19 @@ export default function SideNavigation() {
             path={homeSvgInfoRef.current.path}
             viewBox={homeSvgInfoRef.current.viewBox}
           />
-          Home
+          <span
+            className={css({
+              display:
+                navigationSide === "left"
+                  ? {
+                      base: "none",
+                      sm: "inline",
+                    }
+                  : {},
+            })}
+          >
+            Home
+          </span>
         </NavLink>
         <NavLink
           to={navLinks.analytics}
@@ -81,7 +112,19 @@ export default function SideNavigation() {
             path={analyticsSvgInfoRef.current.path}
             viewBox={analyticsSvgInfoRef.current.viewBox}
           />
-          Analytics
+          <span
+            className={css({
+              display:
+                navigationSide === "left"
+                  ? {
+                      base: "none",
+                      sm: "inline",
+                    }
+                  : {},
+            })}
+          >
+            Analytics
+          </span>
         </NavLink>
         <NavLink
           to={navLinks.account}
@@ -93,7 +136,19 @@ export default function SideNavigation() {
             path={accountSvgInfoRef.current.path}
             viewBox={accountSvgInfoRef.current.viewBox}
           />
-          Account
+          <span
+            className={css({
+              display:
+                navigationSide === "left"
+                  ? {
+                      base: "none",
+                      sm: "inline",
+                    }
+                  : {},
+            })}
+          >
+            Account
+          </span>
         </NavLink>
         <NavLink
           to={navLinks.settings}
@@ -105,7 +160,19 @@ export default function SideNavigation() {
             path={settingsSvgInfoRef.current.path}
             viewBox={settingsSvgInfoRef.current.viewBox}
           />
-          Settings
+          <span
+            className={css({
+              display:
+                navigationSide === "left"
+                  ? {
+                      base: "none",
+                      sm: "inline",
+                    }
+                  : {},
+            })}
+          >
+            Settings
+          </span>
         </NavLink>
         <NavLink
           to={navLinks.info}
@@ -117,7 +184,19 @@ export default function SideNavigation() {
             path={infoSvgInfoRef.current.path}
             viewBox={infoSvgInfoRef.current.viewBox}
           />
-          Info
+          <span
+            className={css({
+              display:
+                navigationSide === "left"
+                  ? {
+                      base: "none",
+                      sm: "inline",
+                    }
+                  : {},
+            })}
+          >
+            Info
+          </span>
         </NavLink>
       </div>
       <div>
@@ -140,7 +219,19 @@ export default function SideNavigation() {
                 : logoutSvgInfoRef.current.viewBox
             }
           />
-          {isAuthenticated ? "Logout" : "Login"}
+          <span
+            className={css({
+              display:
+                navigationSide === "left"
+                  ? {
+                      base: "none",
+                      sm: "inline",
+                    }
+                  : {},
+            })}
+          >
+            {isAuthenticated ? "Logout" : "Login"}
+          </span>
         </NavLink>
       </div>
     </div>

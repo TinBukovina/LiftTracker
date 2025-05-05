@@ -22,7 +22,7 @@ export default function TableHeader({
 
         padding: "1rem 2rem",
 
-        backgroundColor: "surface.s2",
+        backgroundColor: "table.header",
         borderBottom: "2px solid token(colors.typography.text)",
 
         fontSize: "h6",

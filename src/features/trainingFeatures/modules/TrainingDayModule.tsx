@@ -26,12 +26,19 @@ interface ValuesInterface {
   val1: string;
   val2: string;
   index: number;
+  startTime: number | null;
 }
 
 export interface InputDataInterface {
   id?: string;
   exercise: string;
   values: ValuesInterface[];
+}
+
+interface LocalStorageTrainingData {
+  inputData: InputDataInterface[];
+  trainningDay: string;
+  choosenExercises: string[];
 }
 
 export default function TrainingDayModule() {
@@ -46,12 +53,52 @@ export default function TrainingDayModule() {
   const { trainingDays, isLoading } = useTrainingDays(id!);
   const createTrainingInstance = useCreateTrainingInstance();
 
+  useEffect(() => {
+    if (inputData.length > 0) {
+      localStorage.setItem(
+        `trainingInputData_${id}`,
+        JSON.stringify({
+          trainningDay: trainingDayName,
+          inputData,
+          choosenExercises,
+        })
+      );
+    }
+  }, [inputData, choosenExercises, trainingDayName, id]);
+
   // Start training timer
   useEffect(() => {
     if (localStorage.getItem("trainingStartTime") === null) {
       localStorage.setItem("trainingStartTime", new Date().toISOString());
     }
-  }, []);
+
+    const localStorageTrainingDataString = localStorage.getItem(
+      `trainingInputData_${id}`
+    );
+
+    if (!localStorageTrainingDataString) {
+      return;
+    }
+    const localStorageTrainingData: LocalStorageTrainingData = JSON.parse(
+      localStorageTrainingDataString
+    );
+
+    if (localStorageTrainingData.trainningDay !== trainingDayName) {
+      localStorage.removeItem(`trainingInputData_${id}`);
+      return;
+    }
+
+    const savedInputData = localStorageTrainingData.inputData;
+    const savedChoosenExercises = localStorageTrainingData.choosenExercises;
+
+    if (savedInputData) {
+      setInputData(savedInputData);
+    }
+
+    if (savedChoosenExercises) {
+      setChoosenExercises(savedChoosenExercises);
+    }
+  }, [id, trainingDayName]);
 
   const choosenTrainingDay = trainingDays
     ?.filter(
@@ -155,7 +202,7 @@ export default function TrainingDayModule() {
 
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent: "start",
           })}
         >
           <div
@@ -176,6 +223,7 @@ export default function TrainingDayModule() {
               value={selectValue}
               onChange={(value) => setSelectValue(value)}
               placeholder="Choose an option"
+              mWidth={true}
             />
 
             <Button
@@ -230,6 +278,7 @@ export default function TrainingDayModule() {
                               (getExerciseSetWithMaxIndexInInputData(
                                 selectedExerciseName
                               )?.index || 1) - 1,
+                            startTime: null,
                           },
                         ],
                       },
@@ -319,12 +368,18 @@ export default function TrainingDayModule() {
                     getExerciseSetWithMaxIndexInInputData(choosenExerciseName)
                       ?.index ?? -1;
 
+                  console.log(exerciseData.values);
+
                   return exerciseData.values
                     .sort((a, b) => a.index - b.index)
                     .filter((performedExe) => performedExe.index !== maxIndex)
-                    .map((performedExe) => {
+                    .map((performedExe, i) => {
                       return (
                         <TrainingTableRow
+                          startTime={performedExe.startTime || null}
+                          secondToLastChild={
+                            i === exerciseData.values.length - 2
+                          }
                           key={`row-${choosenExerciseName}-${performedExe.index}`}
                           val1={performedExe.val1}
                           val2={performedExe.val2}
@@ -352,9 +407,8 @@ export default function TrainingDayModule() {
                                       (x) => x.index !== performedExe.index
                                     ),
                                     {
+                                      ...performedExe,
                                       val1: e.target.value,
-                                      val2: performedExe.val2,
-                                      index: performedExe.index,
                                     },
                                   ],
                                 },
@@ -384,9 +438,8 @@ export default function TrainingDayModule() {
                                       (x) => x.index !== performedExe.index
                                     ),
                                     {
-                                      val1: performedExe.val1,
+                                      ...performedExe,
                                       val2: e.target.value,
-                                      index: performedExe.index,
                                     },
                                   ],
                                 },
@@ -428,6 +481,7 @@ export default function TrainingDayModule() {
                     });
                 })()}
                 <TrainingTableRow
+                  startTime={lastInputs[choosenExerciseName].startTime || null}
                   lastChild={true}
                   key={`${choosenExerciseName}-entering-row`}
                   val1={lastInputs[choosenExerciseName]?.val1}
@@ -458,10 +512,8 @@ export default function TrainingDayModule() {
                                   lastInputs[choosenExerciseName]?.index || 0
                             ),
                             {
+                              ...lastInputs[choosenExerciseName],
                               val1: e.target.value,
-                              val2: lastInputs[choosenExerciseName]?.val2 || "",
-                              index:
-                                lastInputs[choosenExerciseName]?.index || 0,
                             },
                           ],
                         },
@@ -494,10 +546,8 @@ export default function TrainingDayModule() {
                                 lastInputs[choosenExerciseName].index
                             ),
                             {
-                              val1: lastInputs[choosenExerciseName]?.val1 || "",
+                              ...lastInputs[choosenExerciseName],
                               val2: e.target.value,
-                              index:
-                                lastInputs[choosenExerciseName]?.index || 0,
                             },
                           ],
                         },
@@ -521,22 +571,47 @@ export default function TrainingDayModule() {
                         return pid;
                       }
 
+                      console.log(choosenInputData);
+
+                      // Setting up startTimer for new performed set
+                      const lastSet = choosenInputData.values
+                        .sort((a, b) => b.index - a.index)
+                        .map((x) => ({
+                          ...x,
+                          startTime: Date.now(),
+                        }))
+                        .at(0);
+
+                      console.log(lastSet);
+
+                      if (!lastSet) {
+                        return pid;
+                      }
+
                       const filteredInputData = pid.filter(
                         (x) =>
                           x.exercise.toLowerCase() !==
                           choosenExerciseName.toLowerCase()
                       );
 
+                      if (!filteredInputData) {
+                        return pid;
+                      }
+
                       return [
                         ...filteredInputData,
                         {
                           ...choosenInputData,
                           values: [
-                            ...(choosenInputData?.values || []),
+                            ...(choosenInputData?.values.filter(
+                              (x) => x.index !== lastSet?.index
+                            ) || []),
+                            lastSet,
                             {
                               val1: "",
                               val2: "",
                               index: lastInputs[choosenExerciseName].index + 1,
+                              startTime: null,
                             },
                           ],
                         },
@@ -551,9 +626,6 @@ export default function TrainingDayModule() {
 
           <div
             className={css({
-              position: "sticky",
-              bottom: "0",
-
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -621,6 +693,8 @@ export default function TrainingDayModule() {
 
                 createTrainingInstance.mutate(data);
                 localStorage.removeItem("trainingStartTime");
+                localStorage.removeItem("trainingInputData");
+                localStorage.removeItem("choosenExercises");
               }}
             >
               Finish

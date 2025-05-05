@@ -34,10 +34,6 @@ export default function TrainingDaysTableRow({
         fontSize: "md",
         fontWeight: "normal",
         color: "typography.text",
-
-        _hover: {
-          backgroundColor: "surface.s0",
-        },
       })}
       style={{
         display: "grid",

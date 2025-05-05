@@ -12,6 +12,7 @@ interface SelectProps {
   onChange: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  mWidth?: boolean;
 }
 
 export default function Select({
@@ -20,6 +21,7 @@ export default function Select({
   onChange,
   placeholder = "Select an option",
   disabled = false,
+  mWidth = false,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState<string>("");
@@ -64,8 +66,9 @@ export default function Select({
       ref={selectRef}
       className={css({
         position: "relative",
-        width: "fit-content",
-        minWidth: "200px",
+
+        minWidth: "190px",
+        width: !mWidth ? "100%" : "",
       })}
     >
       {/* Select trigger */}
@@ -148,7 +151,7 @@ export default function Select({
             boxShadow: "md",
 
             color: "buttons.text.normal",
-            zIndex: 10,
+            zIndex: 30,
 
             overflowY: "auto",
             listStyle: "none",
