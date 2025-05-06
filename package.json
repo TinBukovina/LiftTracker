@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "panda codegen",
     "dev": "vite --host",
-    "build": "vite build",
+    "build": "npm run prepare && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -17,11 +17,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
-    "recharts": "^2.15.3"
+    "recharts": "^2.15.3",
+    "@pandacss/dev": "^0.53.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
-    "@pandacss/dev": "^0.53.4",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@vitejs/plugin-react": "^4.3.4",
