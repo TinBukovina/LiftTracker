@@ -5,7 +5,13 @@ import svgr from "vite-plugin-svgr";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), svgr()],
+  build: {
+    rollupOptions: {
+      external: ["firebase-admin"],
+    },
+  },
   optimizeDeps: {
     include: ["recharts"],
+    exclude: ["firebase-admin"],
   },
 });
