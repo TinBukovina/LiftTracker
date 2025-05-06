@@ -25,7 +25,7 @@ export default function NotAvailablePage() {
       >
         Whoops... this page is not yet available
       </p>
-      <NavLink to="/">Go back</NavLink>
+      <NavLink to="/trainingSplits">Go back</NavLink>
     </div>
   );
 }
