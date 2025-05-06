@@ -14,6 +14,7 @@ interface NavigationContextType {
   setNavigationVisibility: (visibility: boolean) => void;
   navigationSide: NavigationSide;
   setNavigationSide: React.Dispatch<React.SetStateAction<NavigationSide>>;
+  closeNavigation: () => void;
 }
 
 type NavigationSide = "left" | "right" | null;
@@ -24,6 +25,7 @@ const NavigationContext = createContext<NavigationContextType>({
   setNavigationVisibility: () => {},
   navigationSide: null,
   setNavigationSide: () => {},
+  closeNavigation: () => {},
 });
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
@@ -36,6 +38,10 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 
   const toggleNavigation = () => {
     setIsNavigationVisible((prev) => !prev);
+  };
+
+  const closeNavigation = () => {
+    setIsNavigationVisible(false);
   };
 
   const setNavigationVisibility = (visible: boolean) => {
@@ -68,6 +74,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         setNavigationVisibility,
         navigationSide,
         setNavigationSide,
+        closeNavigation,
       }}
     >
       {children}

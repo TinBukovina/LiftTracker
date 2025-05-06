@@ -7,14 +7,24 @@ import {
   convertNumberToWeekDay,
   formatDate,
   unSlugifyName,
+  uppercaseFirstLetter,
 } from "../../../utils/helperFunction";
-import { useTrainingInstance } from "../customHooks/useTrainingInstances";
+import {
+  useTrainingInstance,
+  UseTrainingInstanceReturnData,
+} from "../customHooks/useTrainingInstances";
 import TrainingDayHistoryTableRow from "../components/TrainingDayHistoryTableRow";
 import Divider from "../../../components/Divider";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
+import CopyBtn from "../components/CopyBtn";
+import { TableHeaderStyle } from "../components/TableHeader";
+import { Flex } from "../../../../styled-system/jsx";
 
 export default function TrainingDayHistoryModule() {
   const { id, trainingDayName } = useParams();
   const { trainingDays, isLoading } = useTrainingDays(id!);
+
+  const windowWidth = useWindowWidth();
 
   const choosenTrainingDay = trainingDays
     ?.filter(
@@ -27,10 +37,33 @@ export default function TrainingDayHistoryModule() {
 
   if (isLoading || isLoadingTrainingInstances) return "Loading...";
 
-  console.log(trainingInstances);
   trainingInstances?.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+
+  const getTrainingInstanceDataInTextFormat = (
+    trainingInstanceData: UseTrainingInstanceReturnData
+  ): string => {
+    let output: string = "";
+
+    output += `Date: ${formatDate(trainingInstanceData.date)}\n`;
+
+    for (const exercise of trainingInstanceData.exercises) {
+      output += `${uppercaseFirstLetter(exercise.name)}: `;
+
+      let index = 0;
+      for (const setPerformance of exercise.data.sort(
+        (a, b) => a.set_order! - b.set_order!
+      )) {
+        if (index !== 0) output += ", ";
+        output += `${setPerformance.weight}x${setPerformance.reps}`;
+        index++;
+      }
+      output += "\n";
+    }
+
+    return output;
+  };
 
   return (
     <div
@@ -90,13 +123,40 @@ export default function TrainingDayHistoryModule() {
           <div key={el.date}>
             <Table
               key={`${el.date}${el.exercises.length}`}
-              headers={[
-                "Date:",
-                `${formatDate(el.date)}`,
-                `${convertNumberToWeekDay(choosenTrainingDay?.day_order || 0, false)}`,
-              ]}
-              useLeftAlign={true}
+              headers={[]}
+              removeHeader={true}
             >
+              <TableHeaderStyle
+                className={css({
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "1rem",
+                })}
+              >
+                <Flex gap={"1rem"}>
+                  <span>Date:</span>
+                  <span className={css({})}>
+                    {windowWidth > 500
+                      ? formatDate(el.date)
+                      : formatDate(el.date, true)}
+                  </span>
+                  <span
+                    className={css({
+                      display: {
+                        base: "none",
+                        xs: "inline-block",
+                      },
+                    })}
+                  >
+                    {convertNumberToWeekDay(
+                      choosenTrainingDay?.day_order || 0,
+                      false
+                    )}
+                  </span>
+                </Flex>
+                <CopyBtn textToCopy={getTrainingInstanceDataInTextFormat(el)} />
+              </TableHeaderStyle>
               {el.exercises.map((exe, index) =>
                 index === el.exercises.length - 1 ? (
                   <TrainingDayHistoryTableRow
@@ -119,3 +179,10 @@ export default function TrainingDayHistoryModule() {
     </div>
   );
 }
+
+/*
+Date: 27-03-2025
+Incline Bench Press: 100x100, 100x100, 100x100
+Cable Crossover: 100x100
+
+*/

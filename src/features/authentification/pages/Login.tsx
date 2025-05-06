@@ -174,7 +174,7 @@ export default function Login() {
                 width: "fit-content",
 
                 textAlign: "center",
-                color: "actions.green",
+                color: "actions.borderPositive",
                 cursor: "pointer",
 
                 pointerEvents: isLoading ? "none" : "default",

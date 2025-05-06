@@ -6,12 +6,20 @@ import Button from "../components/Button";
 import { useTrainingSplits } from "../customHooks/useTrainingSplits";
 import Table from "./Table";
 import TrainingSplitsTableRow from "../components/TrainingSplitsTableRow";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
 
 export default function TrainingSplitModule() {
   const navigate = useNavigate();
   const { isLoading, trainingSplits } = useTrainingSplits();
 
-  const headers = ["Name", "Created at", "Status"];
+  const windowWidth = useWindowWidth();
+
+  const headers =
+    windowWidth > 768
+      ? ["Name", "Created at", "Status"]
+      : windowWidth > 550
+        ? ["Name", "Status"]
+        : ["Name"];
 
   if (isLoading) return "Loading...";
 
@@ -85,6 +93,7 @@ export default function TrainingSplitModule() {
             <TrainingSplitsTableRow
               key={el.id}
               entity={el}
+              numOfRows={headers.length}
               onClick={(e) => {
                 if (!(e.target instanceof HTMLButtonElement))
                   navigate(el?.id || "");

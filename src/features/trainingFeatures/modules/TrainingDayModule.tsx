@@ -17,6 +17,9 @@ import { useLoggedUserInfo } from "../../authentification/context/LoggedUserCont
 import { useCreateTrainingInstance } from "../customHooks/useCreateTrainingInstance";
 import { CreateTrainingInstanceInterface } from "../types/trainingEntities";
 import { useToast } from "../../toasts/ToastContext";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
+import { useTrainingInstance } from "../customHooks/useTrainingInstances";
+import { useCurrentTrainingDayId } from "../customHooks/useCurrentTrainingDayId";
 
 interface LastInputOfInputdataInterfac {
   [key: string]: ValuesInterface;
@@ -51,7 +54,12 @@ export default function TrainingDayModule() {
 
   const { id, trainingDayName } = useParams();
   const { trainingDays, isLoading } = useTrainingDays(id!);
+  const { currentTrainingDayId } = useCurrentTrainingDayId();
+  const { trainingInstances, isLoading: isLoadingTrainingInstances } =
+    useTrainingInstance(currentTrainingDayId!);
   const createTrainingInstance = useCreateTrainingInstance();
+
+  const windowWidth = useWindowWidth();
 
   useEffect(() => {
     if (inputData.length > 0) {
@@ -119,7 +127,8 @@ export default function TrainingDayModule() {
     {}
   );
 
-  if (isLoadingExercises || isLoading) return "Loading...";
+  if (isLoadingExercises || isLoading || isLoadingTrainingInstances)
+    return "Loading...";
 
   const selectOptions: SelectOption[] | undefined = exerciseFromTrainingDay
     ?.filter(
@@ -210,8 +219,10 @@ export default function TrainingDayModule() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              gap: "1rem",
 
               padding: "1rem 2rem",
+              paddingX: windowWidth > 768 ? "2rem" : "1rem",
 
               backgroundColor: "surface.s1",
               border: "2px solid token(colors.effects.border)",
@@ -289,7 +300,7 @@ export default function TrainingDayModule() {
                 });
               }}
             >
-              Add
+              {windowWidth > 440 ? "Add" : ""}
             </Button>
           </div>
           <Divider value="2rem" />
@@ -303,6 +314,7 @@ export default function TrainingDayModule() {
                     alignItems: "center",
                     marginTop: "-0.5rem",
                     padding: "1rem 2rem",
+                    paddingX: windowWidth > 768 ? "2rem" : "1rem",
 
                     borderBottom: "2px solid token(colors.typography.text)",
                   })}
@@ -338,6 +350,7 @@ export default function TrainingDayModule() {
 
                     marginTop: "0.5rem",
                     padding: "1rem 2rem",
+                    paddingX: windowWidth > 768 ? "2rem" : "1rem",
 
                     borderBottom: "2px solid token(colors.effects.border)",
                     fontSize: "md",
@@ -367,8 +380,6 @@ export default function TrainingDayModule() {
                   const maxIndex =
                     getExerciseSetWithMaxIndexInInputData(choosenExerciseName)
                       ?.index ?? -1;
-
-                  console.log(exerciseData.values);
 
                   return exerciseData.values
                     .sort((a, b) => a.index - b.index)
@@ -481,6 +492,63 @@ export default function TrainingDayModule() {
                     });
                 })()}
                 <TrainingTableRow
+                  onClick={() => {
+                    console.log(trainingInstances);
+                  }}
+                  placeholder1={(() => {
+                    const sortedTrainingInstance = trainingInstances?.sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    );
+
+                    if (!sortedTrainingInstance) {
+                      return "ENTER";
+                    }
+
+                    for (const trainingInstance of sortedTrainingInstance) {
+                      const find = trainingInstance.exercises.find(
+                        (el) => el.name === choosenExerciseName
+                      );
+
+                      if (find) {
+                        return (
+                          find.data.find(
+                            (x) =>
+                              x.set_order ===
+                              lastInputs[choosenExerciseName].index
+                          )?.weight || "ENTER"
+                        );
+                      }
+                    }
+                    return "ENTER";
+                  })()}
+                  placeholder2={(() => {
+                    const sortedTrainingInstance = trainingInstances?.sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    );
+
+                    if (!sortedTrainingInstance) {
+                      return "ENTER";
+                    }
+
+                    for (const trainingInstance of sortedTrainingInstance) {
+                      const find = trainingInstance.exercises.find(
+                        (el) => el.name === choosenExerciseName
+                      );
+
+                      if (find) {
+                        return (
+                          find.data.find(
+                            (x) =>
+                              x.set_order ===
+                              lastInputs[choosenExerciseName].index
+                          )?.reps || "ENTER"
+                        );
+                      }
+                    }
+                    return "ENTER";
+                  })()}
                   startTime={lastInputs[choosenExerciseName].startTime || null}
                   lastChild={true}
                   key={`${choosenExerciseName}-entering-row`}
@@ -693,8 +761,7 @@ export default function TrainingDayModule() {
 
                 createTrainingInstance.mutate(data);
                 localStorage.removeItem("trainingStartTime");
-                localStorage.removeItem("trainingInputData");
-                localStorage.removeItem("choosenExercises");
+                localStorage.removeItem(`trainingInputData_${id}`);
               }}
             >
               Finish

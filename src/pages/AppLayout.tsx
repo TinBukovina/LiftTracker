@@ -6,7 +6,8 @@ import SideNavigation from "../features/primaryNavigation/SideNavigation";
 import { useNavigation } from "../contexts/NavigationContext";
 
 export default function AppLayout() {
-  const { navigationSide } = useNavigation();
+  const { navigationSide, isNavigationVisible, closeNavigation } =
+    useNavigation();
 
   return (
     <div
@@ -34,7 +35,17 @@ export default function AppLayout() {
       >
         <SideNavigation />
         <div
+          onClick={() => {
+            closeNavigation();
+          }}
           className={css({
+            display:
+              navigationSide === "right"
+                ? isNavigationVisible
+                  ? "block"
+                  : "none"
+                : "none",
+
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             position: "absolute",
             top: "0",
@@ -50,18 +61,12 @@ export default function AppLayout() {
             flex: "1",
 
             display: "flex",
-            padding: "2rem",
+            padding: {
+              base: "1rem",
+              xs: "2rem",
+            },
+            paddingY: "2rem",
             overflow: "hidden",
-
-            /* ...(navigationSide === "right"
-              ? {
-                  borderLeftColor: "navigation.border",
-                  position: "absolute",
-                  height: "calc(100dvh - 85px)",
-                  zIndex: 10,
-                  width: "230px",
-                }
-              : {}), */
           })}
         >
           <Outlet />

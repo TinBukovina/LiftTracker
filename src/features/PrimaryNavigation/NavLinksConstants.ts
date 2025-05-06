@@ -9,8 +9,8 @@ interface NavLinksInterface {
 export const navLinks: NavLinksInterface = {
   trainingSplits: "/trainingSplits",
   analytics: "/analytics",
-  account: "/account",
-  settings: "/settings",
+  account: "/trackingWeight",
+  settings: "/trackingFood",
   info: "/info",
   login: "/login",
 };

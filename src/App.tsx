@@ -17,6 +17,7 @@ import TrainingDayModule from "./features/trainingFeatures/modules/TrainingDayMo
 import TrainingDayHistoryModule from "./features/trainingFeatures/modules/TrainingDayHistoryModule";
 import CreateTrainingSplitModule from "./features/trainingFeatures/modules/CreateTrainingSplitModule";
 import { NavigationProvider } from "./contexts/NavigationContext";
+import WeightTrackingPage from "./features/weightTracking/WeightTrackingPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,8 +65,8 @@ const router = createBrowserRouter([
         ],
       },
       { path: "/analytics", element: <NotAvailablePage /> },
-      { path: "/account", element: <NotAvailablePage /> },
-      { path: "/settings", element: <NotAvailablePage /> },
+      { path: "/trackingWeight", element: <WeightTrackingPage /> },
+      { path: "/trackingFood", element: <NotAvailablePage /> },
       { path: "/info", element: <NotAvailablePage /> },
     ],
   },

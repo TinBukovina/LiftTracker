@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { css } from "../../../../styled-system/css";
 import IconTemplate from "../../secondaryNavigation/IconTemplate";
 import { SvgReturnType } from "../../../utils/svgPaths";
@@ -25,6 +25,7 @@ const BaseBtnStyles = {
   gap: "0.25rem",
 
   padding: "0.5rem 0.75rem",
+  minWidth: "3rem",
   width: "fit-content",
   height: "fit-content",
 
@@ -105,7 +106,24 @@ export default function Button({
     return { path: "", viewBox: "" };
   },
 }: ButtonProps) {
+  const [isTouched, setIsTouched] = useState<boolean>(false);
   const svgInfo = useMemo(() => svgFunction(), [svgFunction]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+
+    if (!disabled) {
+      setTimeout(() => {
+        setIsTouched(true);
+      }, 150);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!disabled) {
+      setIsTouched(false);
+    }
+  };
 
   const btnStyle =
     type === "positive" && !disabled
@@ -134,9 +152,16 @@ export default function Button({
 
   return (
     <button
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onClick={onClick}
       className={css({
         ...btnStyle,
+        ...(isTouched
+          ? {
+              "&:hover": {},
+            }
+          : {}),
       })}
       disabled={disabled}
       style={inlineStyles}

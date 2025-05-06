@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { css } from "../../../../styled-system/css";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
 
 export interface SelectOption {
   value: string;
@@ -67,7 +68,8 @@ export default function Select({
       className={css({
         position: "relative",
 
-        minWidth: "190px",
+        minWidth: "203px",
+
         width: !mWidth ? "100%" : "",
       })}
     >
@@ -82,6 +84,7 @@ export default function Select({
 
           padding: "0.5rem 0.75rem",
           width: "100%",
+          minHeight: "3rem",
 
           backgroundColor: "buttons.bg.normal",
           borderRadius: "md",

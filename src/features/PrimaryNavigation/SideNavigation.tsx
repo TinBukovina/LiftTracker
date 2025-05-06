@@ -1,14 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { css } from "../../../styled-system/css";
 import NavLink from "./NavLink";
 import {
-  accountSvgInfo,
   analyticsSvgInfo,
+  cookieSvgInfo,
   homeSvgInfo,
   infoSvgInfo,
   loginSvgInfo,
   logoutSvgInfo,
-  settingSvgInfo,
+  scaleSvgInfo,
   SvgReturnType,
 } from "../../utils/svgPaths";
 import { useLocation } from "react-router-dom";
@@ -27,8 +27,8 @@ export default function SideNavigation() {
 
   const homeSvgInfoRef = useRef<SvgReturnType>(homeSvgInfo());
   const analyticsSvgInfoRef = useRef<SvgReturnType>(analyticsSvgInfo());
-  const accountSvgInfoRef = useRef<SvgReturnType>(accountSvgInfo());
-  const settingsSvgInfoRef = useRef<SvgReturnType>(settingSvgInfo());
+  const scaleSvgInfoRef = useRef<SvgReturnType>(scaleSvgInfo());
+  const dietSvgInfoRef = useRef<SvgReturnType>(cookieSvgInfo());
   const infoSvgInfoRef = useRef<SvgReturnType>(infoSvgInfo());
   const loginSvgInfoRef = useRef<SvgReturnType>(loginSvgInfo());
   const logoutSvgInfoRef = useRef<SvgReturnType>(logoutSvgInfo());
@@ -55,7 +55,7 @@ export default function SideNavigation() {
         border: "2px solid transparent",
         borderRightColor: "navigation.border",
 
-        transition: "all 0.3s ease",
+        transition: "minWidth 0.3s ease",
 
         ...(navigationSide === "right"
           ? {
@@ -133,8 +133,8 @@ export default function SideNavigation() {
           <IconTemplate
             width="24"
             height="24"
-            path={accountSvgInfoRef.current.path}
-            viewBox={accountSvgInfoRef.current.viewBox}
+            path={scaleSvgInfoRef.current.path}
+            viewBox={scaleSvgInfoRef.current.viewBox}
           />
           <span
             className={css({
@@ -147,7 +147,7 @@ export default function SideNavigation() {
                   : {},
             })}
           >
-            Account
+            Weight
           </span>
         </NavLink>
         <NavLink
@@ -157,8 +157,8 @@ export default function SideNavigation() {
           <IconTemplate
             width="24"
             height="24"
-            path={settingsSvgInfoRef.current.path}
-            viewBox={settingsSvgInfoRef.current.viewBox}
+            path={dietSvgInfoRef.current.path}
+            viewBox={dietSvgInfoRef.current.viewBox}
           />
           <span
             className={css({
@@ -171,7 +171,7 @@ export default function SideNavigation() {
                   : {},
             })}
           >
-            Settings
+            Diet
           </span>
         </NavLink>
         <NavLink

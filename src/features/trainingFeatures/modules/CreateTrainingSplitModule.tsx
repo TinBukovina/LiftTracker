@@ -233,7 +233,7 @@ export default function CreateTrainingSplitModule() {
 
             backgroundColor: "surface.s1",
 
-            zIndex: "15",
+            zIndex: "1",
           })}
         >
           {inputStep === "one" ? (

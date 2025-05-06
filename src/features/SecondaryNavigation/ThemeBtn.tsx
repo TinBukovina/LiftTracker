@@ -5,6 +5,7 @@ import { moonSvgInfo, sunSvgInfo, SvgReturnType } from "../../utils/svgPaths";
 
 export default function ThemeBtn() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isTouched, setIsTouched] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     JSON.parse(localStorage.getItem("theme_lift_tracker") || "false")
   );
@@ -15,10 +16,36 @@ export default function ThemeBtn() {
     document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsTouched(true);
+
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => {
+      setIsTouched(false);
+    }, 100);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isTouched) {
+      setIsHovered(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isTouched) {
+      setIsHovered(false);
+    }
+  };
+
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={css({
         padding: "0.5rem",
         width: "48px",
@@ -30,8 +57,16 @@ export default function ThemeBtn() {
         border: "2px solid token(colors.navigationBtns.border)",
         borderRadius: "md",
 
-        fill: !isHovered ? "typography.text" : "typography.textHover",
-        color: !isHovered ? "typography.text" : "typography.textHover",
+        fill: !isTouched
+          ? !isHovered
+            ? "typography.text"
+            : "typography.textHover"
+          : "typography.text",
+        color: !isTouched
+          ? !isHovered
+            ? "typography.text"
+            : "typography.textHover"
+          : "typography.text",
         cursor: "pointer",
       })}
       onClick={() => {

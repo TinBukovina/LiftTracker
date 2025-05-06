@@ -2,7 +2,11 @@ export function uppercaseFirstLetter(string: string): string | undefined {
   return string.toUpperCase().at(0)?.concat(string.substring(1, string.length));
 }
 
-export function formatDate(dateString: string): string | undefined {
+export function formatDate(
+  dateString: string,
+  shortenYear: boolean = false,
+  shortFormat: boolean = false
+): string | undefined {
   if (!dateString || dateString === "null") return;
 
   const date = new Date(dateString);
@@ -11,7 +15,10 @@ export function formatDate(dateString: string): string | undefined {
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear();
 
-  return `${day}-${month}-${year}`;
+  if (shortFormat)
+    return `${String(Number(day))}/${String(Number(month))}/${shortenYear ? year % 100 : year}`;
+
+  return `${day}-${month}-${shortenYear ? year % 100 : year}`;
 }
 
 export function convertNumberToWeekDay(
@@ -47,4 +54,33 @@ export function slugifyName(name: string): string {
 
 export function unSlugifyName(slugifyName: string): string {
   return slugifyName.split("-").join(" ");
+}
+
+export function roundNumberToNDecimalPoints(
+  number: number,
+  numOfDecimalPoints: number
+): number {
+  return Number(number.toFixed(numOfDecimalPoints));
+}
+
+export function convertKgToLbs(weightInKg: number): number {
+  return Number((weightInKg * 2.20462).toFixed(2));
+}
+export function ensureISOString(input: string | Date): string {
+  if (input instanceof Date) {
+    return input.toISOString();
+  }
+
+  try {
+    const parsedDate = new Date(input);
+
+    if (isNaN(parsedDate.getTime())) {
+      throw new Error("Invalid date");
+    }
+
+    return parsedDate.toISOString();
+  } catch (error) {
+    console.error("Error converting date:", error);
+    return new Date().toISOString();
+  }
 }

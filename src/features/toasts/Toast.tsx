@@ -76,12 +76,15 @@ export default function Toast({
   return (
     <div
       className={css({
-        position: "absolute",
+        position: "fixed",
         top: "2rem",
-        left: "0",
+
+        display: "inline-block",
+
         width: "100%",
         backgroundColor: "transparent",
-        zIndex: "10",
+        zIndex: "20",
+        pointerEvents: "none",
       })}
     >
       <div

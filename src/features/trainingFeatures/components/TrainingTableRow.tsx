@@ -1,7 +1,8 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { css } from "../../../../styled-system/css";
 import { closeSvgInfo } from "../../../utils/svgPaths";
 import Button from "./Button";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
 
 export interface TrainingTableRowProps {
   lastChild?: boolean;
@@ -13,6 +14,8 @@ export interface TrainingTableRowProps {
   onClick?: <T extends HTMLElement>(e: React.MouseEvent<T>) => void;
   onBtnClick?: () => void;
   startTime?: number | null;
+  placeholder1?: string | number;
+  placeholder2?: string | number;
 }
 
 export default function TrainingTableRow({
@@ -25,8 +28,12 @@ export default function TrainingTableRow({
   onClick,
   onBtnClick,
   startTime,
+  placeholder1 = "",
+  placeholder2 = "",
 }: TrainingTableRowProps) {
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+
+  const windowWidth = useWindowWidth();
 
   // Set up an interval to update the elapsed time every second
   useEffect(() => {
@@ -51,6 +58,7 @@ export default function TrainingTableRow({
       onClick={onClick}
       className={css({
         padding: "1rem 2rem",
+        paddingX: windowWidth > 768 ? "2rem" : "1rem",
 
         borderBottom: !lastChild
           ? "2px solid token(colors.effects.border)"
@@ -72,6 +80,8 @@ export default function TrainingTableRow({
         onChange={onChange1}
         className={css({
           padding: "0.5rem 0.75rem",
+          minWidth: lastChild ? "4.88rem" : "4rem",
+          width: "10vw",
           maxWidth: "120px",
 
           backgroundColor: "surface.s0",
@@ -89,7 +99,7 @@ export default function TrainingTableRow({
           },
         })}
         type="number"
-        placeholder="ENTER"
+        placeholder={placeholder1 + ""}
       />
 
       <input
@@ -97,6 +107,8 @@ export default function TrainingTableRow({
         onChange={onChange2}
         className={css({
           padding: "0.5rem 0.75rem",
+          minWidth: lastChild ? "4.88rem" : "4rem",
+          width: "10vw",
           maxWidth: "120px",
 
           backgroundColor: "surface.s0",
@@ -114,7 +126,7 @@ export default function TrainingTableRow({
           },
         })}
         type="number"
-        placeholder="ENTER"
+        placeholder={placeholder2 + ""}
       />
 
       {lastChild ? (

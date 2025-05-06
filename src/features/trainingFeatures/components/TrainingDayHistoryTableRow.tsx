@@ -1,4 +1,5 @@
 import { css } from "../../../../styled-system/css";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
 import { uppercaseFirstLetter } from "../../../utils/helperFunction";
 import { TrainingInstsanceCustomInterface } from "../customHooks/useTrainingInstances";
 
@@ -13,6 +14,8 @@ export default function TrainingDayHistoryTableRow({
   lastChild = false,
   onClick,
 }: TrainingSplitTableRowProps) {
+  const windowWidth = useWindowWidth();
+
   return (
     <div
       onClick={onClick}
@@ -35,16 +38,21 @@ export default function TrainingDayHistoryTableRow({
         justifyContent: "start",
       }}
     >
-      <span
-        className={css({
-          display: "flex",
-          gap: "1rem",
-        })}
-      >
-        <span>{uppercaseFirstLetter(entity.name)}:</span>
-        {entity.data.map((performance) => (
-          <span key={performance.id}>
+      <span className={css({})}>
+        <span
+          className={css({
+            display: windowWidth > 768 ? "inline" : "block",
+          })}
+        >
+          {uppercaseFirstLetter(entity.name)}:{" "}
+        </span>
+        {entity.data.map((performance, i) => (
+          <span
+            className={css({ color: "typography.secondaryText" })}
+            key={performance.id}
+          >
             {performance.weight} x {performance.reps}
+            {!(entity.data.length - 1 === i) ? ", " : ""}
           </span>
         ))}
       </span>

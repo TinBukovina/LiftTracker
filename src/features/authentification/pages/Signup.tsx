@@ -240,7 +240,7 @@ export default function Signup() {
                 width: "fit-content",
 
                 textAlign: "center",
-                color: "actions.green",
+                color: "actions.borderPositive",
                 cursor: "pointer",
 
                 _hover: {

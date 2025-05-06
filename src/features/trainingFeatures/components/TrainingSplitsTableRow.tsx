@@ -7,21 +7,26 @@ import { TrainingSplitInterface } from "../types/trainingEntities";
 import Button from "./Button";
 import StatusCode from "./StatusCode";
 import { useDeleteTrainingSplit } from "../customHooks/useDeleteTrainingSplits";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
 
 export interface TrainingSplitTableRowProps {
   entity: TrainingSplitInterface;
   lastChild?: boolean;
+  numOfRows?: number;
   onClick?: <T extends HTMLElement>(e: React.MouseEvent<T>) => void;
 }
 
 export default function TrainingSplitsTableRow({
   entity,
   lastChild = false,
+  numOfRows = 3,
   onClick,
 }: TrainingSplitTableRowProps) {
   const [displayAction, setDisplayAction] = useState<boolean>(false);
   const useUpdateTrainingSplitMutation = useUpdateTrainingSplit();
   const deleteTrainingSplit = useDeleteTrainingSplit();
+
+  const windowWidth = useWindowWidth();
 
   return (
     <div>
@@ -44,25 +49,36 @@ export default function TrainingSplitsTableRow({
         })}
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(3, 2fr) 1fr`,
+          gridTemplateColumns: `repeat(${numOfRows}, 2fr) 1fr`,
           gap: "1rem",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
         <span>{entity.name}</span>
-        <span
-          className={css({
-            color: "typography.secondaryText",
-          })}
-        >
-          {formatDate(entity.created_at || "")}
-        </span>
-        {entity.is_active ? (
-          <StatusCode type="ongoing" />
+
+        {windowWidth > 768 ? (
+          <span
+            className={css({
+              color: "typography.secondaryText",
+            })}
+          >
+            {formatDate(entity.created_at || "")}
+          </span>
         ) : (
-          <StatusCode type="finished" />
+          ""
         )}
+
+        {windowWidth > 550 ? (
+          entity.is_active ? (
+            <StatusCode type="ongoing" />
+          ) : (
+            <StatusCode type="finished" />
+          )
+        ) : (
+          ""
+        )}
+
         {entity.is_active ? (
           <Button
             onClick={() => {
@@ -83,6 +99,7 @@ export default function TrainingSplitsTableRow({
             }}
             disabled={useUpdateTrainingSplitMutation.isPending}
             center={true}
+            type="negative"
           >
             Activate
           </Button>
@@ -105,6 +122,15 @@ export default function TrainingSplitsTableRow({
           color: "typography.text",
         })}
       >
+        {windowWidth < 550 ? (
+          entity.is_active ? (
+            <StatusCode type="ongoing" />
+          ) : (
+            <StatusCode type="finished" />
+          )
+        ) : (
+          ""
+        )}
         <Button
           onClick={() => {
             if (!entity.id) return;

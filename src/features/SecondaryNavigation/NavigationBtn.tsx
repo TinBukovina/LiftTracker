@@ -6,20 +6,45 @@ import { useNavigation } from "../../contexts/NavigationContext";
 
 export default function NavigationBtn() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isTouched, setIsTouched] = useState<boolean>(false);
 
-  const {
-    isNavigationVisible,
-    toggleNavigation,
-    setNavigationSide,
-    navigationSide,
-  } = useNavigation();
+  const { toggleNavigation } = useNavigation();
 
   const svgInfoRef = useRef<SvgReturnType>(menuSvgInfo());
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsTouched(true);
+
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => {
+      setIsTouched(false);
+    }, 100);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isTouched) {
+      setIsHovered(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isTouched) {
+      setIsHovered(false);
+    }
+  };
+
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClickCapture={(e) => {
+        e.preventDefault();
+      }}
       onClick={() => {
         toggleNavigation();
       }}
@@ -36,8 +61,16 @@ export default function NavigationBtn() {
         border: "2px solid token(colors.navigationBtns.border)",
         borderRadius: "md",
 
-        fill: !isHovered ? "typography.text" : "typography.textHover",
-        color: !isHovered ? "typography.text" : "typography.textHover",
+        fill: isTouched
+          ? "typography.textActive"
+          : !isHovered
+            ? "typography.text"
+            : "typography.textHover",
+        color: isTouched
+          ? "typography.textActive"
+          : !isHovered
+            ? "typography.text"
+            : "typography.textHover",
         cursor: "pointer",
       })}
     >

@@ -4,6 +4,7 @@ import Table from "./Table";
 import { useTrainingDays } from "../customHooks/useTrainingDays";
 import TrainingDaysTableRow from "../components/TrainingDaysTableRow";
 import { useTrainingSplits } from "../customHooks/useTrainingSplits";
+import { useWindowWidth } from "../../../customHooks/useWindowWidth";
 
 export default function TrainingSplitDaysModule() {
   const { id } = useParams();
@@ -11,7 +12,14 @@ export default function TrainingSplitDaysModule() {
   const { trainingSplits, isLoading: isLoadingTrainingSPlit } =
     useTrainingSplits();
 
-  const header = ["Name", "Last trained", "Day", ""];
+  const windowWidth = useWindowWidth();
+
+  const headers =
+    windowWidth > 855
+      ? ["Name", "Last trained", "Day", "", ""]
+      : windowWidth > 655
+        ? ["Name", "Last trained", "", ""]
+        : ["Name", "", ""];
   const choosenSplit = trainingSplits?.filter((el) => el.id === id).at(0);
 
   if (isLoading || isLoadingTrainingSPlit) return "Loading...";
@@ -53,9 +61,13 @@ export default function TrainingSplitDaysModule() {
         </div>
       </div>
 
-      <Table headers={header} isLastColumnEmpty={false}>
+      <Table headers={headers} isLastColumnEmpty={false}>
         {trainingDays?.map((el) => (
-          <TrainingDaysTableRow key={el.id} entity={el} />
+          <TrainingDaysTableRow
+            numOfCols={headers.length}
+            key={el.id}
+            entity={el}
+          />
         ))}
       </Table>
     </div>

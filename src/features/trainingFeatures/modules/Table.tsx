@@ -7,6 +7,7 @@ interface TableProps {
   headers: string[];
   isLastColumnEmpty?: boolean;
   useLeftAlign?: boolean;
+  removeHeader?: boolean;
 }
 
 export default function Table({
@@ -14,6 +15,7 @@ export default function Table({
   headers,
   isLastColumnEmpty = false,
   useLeftAlign = false,
+  removeHeader = false,
 }: TableProps) {
   return (
     <div
@@ -31,7 +33,7 @@ export default function Table({
         overflow: "hidden",
       })}
     >
-      {headers.length > 0 ? (
+      {headers.length > 0 && !removeHeader ? (
         <TableHeader
           numOfCols={headers.length}
           isLastColumnEmpty={isLastColumnEmpty}
@@ -43,14 +45,14 @@ export default function Table({
           {isLastColumnEmpty ? <span></span> : ""}
         </TableHeader>
       ) : (
-        ""
+        <span style={{ display: "none" }}></span>
       )}
       <div
         className={css({
           flex: "1",
           minHeight: "0",
           overflow: "auto",
-          marginTop: "0.5rem",
+          marginTop: !removeHeader ? "0.5rem" : "0",
 
           "&::-webkit-scrollbar": {
             width: "8px",

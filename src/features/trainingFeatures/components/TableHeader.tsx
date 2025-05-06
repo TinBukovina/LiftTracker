@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { css } from "../../../../styled-system/css";
+import { styled } from "../../../../styled-system/jsx";
 
 interface TableHeaderProps {
   children: ReactNode;
@@ -8,6 +8,22 @@ interface TableHeaderProps {
   useLeftAlign?: boolean;
 }
 
+export const TableHeaderStyle = styled("div", {
+  base: {
+    position: "sticky",
+    top: "0",
+
+    padding: "1rem 2rem",
+
+    backgroundColor: "table.header",
+    borderBottom: "2px solid token(colors.typography.text)",
+
+    fontSize: "h6",
+    fontWeight: "semibold",
+    color: "typography.text",
+  },
+});
+
 export default function TableHeader({
   children,
   numOfCols,
@@ -15,20 +31,7 @@ export default function TableHeader({
   useLeftAlign = false,
 }: TableHeaderProps) {
   return (
-    <div
-      className={css({
-        position: "sticky",
-        top: "0",
-
-        padding: "1rem 2rem",
-
-        backgroundColor: "table.header",
-        borderBottom: "2px solid token(colors.typography.text)",
-
-        fontSize: "h6",
-        fontWeight: "semibold",
-        color: "typography.text",
-      })}
+    <TableHeaderStyle
       style={
         !useLeftAlign
           ? {
@@ -41,6 +44,6 @@ export default function TableHeader({
       }
     >
       {children}
-    </div>
+    </TableHeaderStyle>
   );
 }

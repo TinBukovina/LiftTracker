@@ -11,6 +11,11 @@ export interface TrainingInstsanceCustomInterface {
   data: PerformedSetsOptionalInterface[];
 }
 
+export interface UseTrainingInstanceReturnData {
+  date: string;
+  exercises: TrainingInstsanceCustomInterface[];
+}
+
 export function useTrainingInstance(trainingDayId: string | undefined) {
   const {
     data: trainingInstances,
@@ -18,7 +23,7 @@ export function useTrainingInstance(trainingDayId: string | undefined) {
     error,
   } = useQuery({
     queryKey: ["trainingInstances", trainingDayId],
-    queryFn: async () => {
+    queryFn: async (): Promise<UseTrainingInstanceReturnData[]> => {
       const trainingInstanceData = [];
 
       const trainingInstances =
@@ -37,7 +42,6 @@ export function useTrainingInstance(trainingDayId: string | undefined) {
         const preformedExercises =
           await getPerformedExercisesWithTrainingInstanceId(instance.id);
 
-        console.log("instance\n", instance);
         const data = {
           date: instance.date,
           exercises: [] as TrainingInstsanceCustomInterface[],
@@ -57,7 +61,7 @@ export function useTrainingInstance(trainingDayId: string | undefined) {
         trainingInstanceData.push(data);
       }
 
-      return trainingInstanceData;
+      return trainingInstanceData as UseTrainingInstanceReturnData[];
     },
     enabled: !!trainingDayId,
     refetchOnWindowFocus: true,
