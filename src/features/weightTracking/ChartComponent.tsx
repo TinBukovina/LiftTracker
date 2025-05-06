@@ -135,12 +135,10 @@ interface WeeklyData {
 }
 
 const aggregateDataByWeek = (data: DataPointInterface[]) => {
-  // Definiranje tipa za weeklyData objekt
   const weeklyData: WeeklyData = {};
 
   data.forEach((item) => {
     const date = new Date(item.date);
-    // Dobivanje prvog dana u tjednu kao ključa
     const weekStart = new Date(date);
     weekStart.setDate(date.getDate() - date.getDay());
     const weekKey = weekStart.toISOString().split("T")[0];
@@ -153,7 +151,6 @@ const aggregateDataByWeek = (data: DataPointInterface[]) => {
     weeklyData[weekKey].count += 1;
   });
 
-  // Pretvaranje u polje i izračun prosjeka
   return Object.entries(weeklyData).map(([date, aggregateData]) => ({
     date,
     value: aggregateData.sum / aggregateData.count,
@@ -181,16 +178,13 @@ export default function ChartComponent({
     );
     if (data.length <= maxDataPoints) return data;
 
-    // Za manje od 3x više podataka, koristite jednostavno poduzorkovanje
     if (data.length < maxDataPoints * 3) {
       return sampleData(data, maxDataPoints);
     }
 
-    // Za veliki broj podataka, koristite agregaciju po vremenskom periodu
     return aggregateDataByWeek(data);
   }, [data, maxDataPoints]);
 
-  // Nastavite s obradom optimiziranih podataka
   const chartData = optimizedData.map((el) => ({
     date: formatDate(el.date + "", false, true),
     value: el.value,
@@ -282,6 +276,7 @@ export default function ChartComponent({
                 <Line
                   type="monotone"
                   dataKey="value"
+                  name="Weight"
                   stroke={color}
                   strokeWidth={2}
                   dot={{ r: 4 }}

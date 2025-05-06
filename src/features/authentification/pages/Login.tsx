@@ -10,6 +10,8 @@ import FormButton from "../components/FormButton";
 import { LoginCredentialInteface, useLogin } from "../customHooks/useLogin";
 import { useLoggedUserInfo } from "../context/LoggedUserContext";
 import Logo from "../../secondaryNavigation/Logo";
+import { Box } from "../../../../styled-system/jsx";
+import Button from "../../trainingFeatures/components/Button";
 
 interface LoginFormData {
   password: {
@@ -29,11 +31,11 @@ interface LoginFormData {
 export default function Login() {
   const [formData, setFormData] = useState<LoginFormData>({
     password: {
-      value: "test123",
+      value: "",
       required: true,
     },
     email: {
-      value: "test@gmail.com",
+      value: "",
       required: true,
     },
   });
@@ -99,6 +101,24 @@ export default function Login() {
         overflow: "hidden",
       })}
     >
+      <Box position={"absolute"} left={"1rem"} bottom={"1rem"}>
+        <Button
+          onClick={() => {
+            setFormData(() => ({
+              password: {
+                value: "test123",
+                required: true,
+              },
+              email: {
+                value: "test@gmail.com",
+                required: true,
+              },
+            }));
+          }}
+        >
+          Get test data
+        </Button>
+      </Box>
       <Logo size={4} />
 
       <div

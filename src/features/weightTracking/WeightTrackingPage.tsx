@@ -229,7 +229,7 @@ export default function WeightTrackingPage() {
           maxDataPoints={windowWidth > 700 ? 50 : 10}
           yAxisLabel="Weight"
           data={chartData}
-          title="You weight"
+          title="Your weight"
           color="#0AA480"
         />
       </Flex>

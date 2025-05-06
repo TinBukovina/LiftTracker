@@ -46,23 +46,23 @@ export interface SignUpFormData {
 export default function Signup() {
   const [formData, setFormData] = useState<SignUpFormData>({
     firstName: {
-      value: "Tin",
+      value: "",
       required: true,
     },
     secondName: {
-      value: "Bukovina",
+      value: "",
       required: false,
     },
     email: {
-      value: "pawevix747@asaption.com",
+      value: "",
       required: true,
     },
     password: {
-      value: "random123!",
+      value: "",
       required: true,
     },
     repeatPassword: {
-      value: "random123!",
+      value: "",
       required: true,
     },
   });
