@@ -15,7 +15,7 @@ export default function CopyBtn({ textToCopy }: CopyBtnProps) {
   const copySvgInfoRef = useRef<SvgReturnType>(copySvgInfo());
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const themeRef = useRef<boolean>(
-    JSON.parse(localStorage.getItem("theme_lift_tracker") || "")
+    JSON.parse(localStorage.getItem("theme_lift_tracker") || "true")
   );
 
   const handleTouchStart = (e: React.TouchEvent) => {
