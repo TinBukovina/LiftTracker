@@ -14,6 +14,10 @@ export default function ThemeBtn() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);
+
+    if (!localStorage.getItem("theme_lift_tracker")) {
+      localStorage.setItem("theme_lift_tracker", JSON.stringify(true));
+    }
   }, [isDarkMode]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
