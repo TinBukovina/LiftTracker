@@ -47,13 +47,15 @@ export function convertNumberToWeekDay(
 
 export function slugifyName(name: string): string {
   return name
+    .replace("#", "__")
+    .replace("/", "_")
     .split(" ")
     .map((el) => el.toLowerCase())
     .join("-");
 }
 
 export function unSlugifyName(slugifyName: string): string {
-  return slugifyName.split("-").join(" ");
+  return slugifyName.replace("__", "#").replace("_", "/").split("-").join(" ");
 }
 
 export function roundNumberToNDecimalPoints(

@@ -61,18 +61,20 @@ export default function TrainingDayModule() {
 
   const windowWidth = useWindowWidth();
 
+  const unslugifTrainingDayName = unSlugifyName(trainingDayName!);
+
   useEffect(() => {
     if (inputData.length > 0) {
       localStorage.setItem(
         `trainingInputData_${id}`,
         JSON.stringify({
-          trainningDay: trainingDayName,
+          trainningDay: unslugifTrainingDayName,
           inputData,
           choosenExercises,
         })
       );
     }
-  }, [inputData, choosenExercises, trainingDayName, id]);
+  }, [inputData, choosenExercises, unslugifTrainingDayName, id]);
 
   // Start training timer
   useEffect(() => {
@@ -91,7 +93,7 @@ export default function TrainingDayModule() {
       localStorageTrainingDataString
     );
 
-    if (localStorageTrainingData.trainningDay !== trainingDayName) {
+    if (localStorageTrainingData.trainningDay !== unslugifTrainingDayName) {
       localStorage.removeItem(`trainingInputData_${id}`);
       return;
     }
@@ -106,11 +108,12 @@ export default function TrainingDayModule() {
     if (savedChoosenExercises) {
       setChoosenExercises(savedChoosenExercises);
     }
-  }, [id, trainingDayName]);
+  }, [id, unslugifTrainingDayName]);
 
   const choosenTrainingDay = trainingDays
     ?.filter(
-      (el) => el.name.toLocaleLowerCase() === unSlugifyName(trainingDayName!)
+      (el) =>
+        el.name.toLocaleLowerCase() === unSlugifyName(unslugifTrainingDayName!)
     )
     .at(0);
 
