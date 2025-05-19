@@ -53,7 +53,13 @@ export default function WeightTrackingPage() {
     (el) => formatDate(el.created_at) === formatDate(new Date().toISOString())
   );
   return (
-    <Flex flexDir={"column"} gap={"1.5rem"} w={"100%"}>
+    <Flex
+      flexDir={"column"}
+      gap={"1.5rem"}
+      w={"100%"}
+      overflow={"auto"}
+      scrollbar={"hidden"}
+    >
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Box fontSize={"h5"}>Track you weight</Box>
         <Button

@@ -12,6 +12,7 @@ import {
 import { formatDate } from "../../utils/helperFunction";
 import { Box, Container } from "../../../styled-system/jsx";
 import { useMemo } from "react";
+import { useWindowWidth } from "../../customHooks/useWindowWidth";
 
 export interface DataPointInterface {
   date: string | Date;
