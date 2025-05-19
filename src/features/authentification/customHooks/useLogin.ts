@@ -50,10 +50,7 @@ export function useLogin() {
       } else if (err.status === 429) {
         addNewToast("Too many attempts. Please try agaain later.", "negative");
       } else {
-        addNewToast(
-          err.message || "An error occured during login.",
-          "negative"
-        );
+        addNewToast("Wrong credentials", "negative");
       }
     },
   });
